@@ -47,6 +47,8 @@ class dmScheduledBehaviors
 						__('by').' '.$rs->user_id.' '.__('on').' '.
 						dt::dt2str($core->blog->settings->system->date_format,$rs->post_dt).' '.
 						dt::dt2str($core->blog->settings->system->time_format,$rs->post_dt).')';
+				} else {
+					$ret .= ' ('.dt::dt2str(__('%Y-%m-%d %H:%M'),$rs->post_dt).')';
 				}
 				$ret .= '</li>';
 			}
@@ -89,9 +91,7 @@ class dmScheduledBehaviors
 
 		return
 		'<script type="text/javascript">'."\n".
-		"//<![CDATA[\n".
 		dcPage::jsVar('dotclear.dmScheduled_Monitor',$core->auth->user_prefs->dmscheduled->scheduled_monitor).
-		"\n//]]>\n".
 		"</script>\n".
 		dcPage::jsLoad(urldecode(dcPage::getPF('dmScheduled/js/service.js')),$core->getVersion('dmScheduled'));
 	}
@@ -137,7 +137,7 @@ class dmScheduledBehaviors
 		// Add fieldset for plugin options
 		$core->auth->user_prefs->addWorkspace('dmscheduled');
 
-		echo '<div class="fieldset"><h4>'.__('Scheduled posts on dashboard').'</h4>'.
+		echo '<div id="dmscheduled" class="fieldset"><h4>'.__('Scheduled posts on dashboard').'</h4>'.
 
 		'<p>'.
 		form::checkbox('dmscheduled_posts_count',1,$core->auth->user_prefs->dmscheduled->scheduled_posts_count).' '.

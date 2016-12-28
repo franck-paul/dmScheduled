@@ -16,9 +16,10 @@ $this->registerModule(
 	/* Name */			"Scheduled Dashboard Module",
 	/* Description*/		"Display scheduled posts on dashboard",
 	/* Author */			"Franck Paul",
-	/* Version */			'0.1',
+	/* Version */			'0.2',
 	array(
 		/* Permissions */	'permissions' =>	'admin',
-		/* Type */			'type' =>			'plugin'
+		/* Type */			'type' =>			'plugin',
+		/* Settings */		'settings' =>		array('pref'  => '#user-favorites.dmscheduled')
 	)
 );
