@@ -22,3 +22,4 @@ $__autoload['dmScheduledRest'] = dirname(__FILE__).'/_services.php';
 
 // Register REST methods
 $core->rest->addFunction('dmScheduledCheck',array('dmScheduledRest','checkScheduled'));
+$core->rest->addFunction('dmLastScheduledRows',array('dmScheduledRest','getLastScheduledRows'));

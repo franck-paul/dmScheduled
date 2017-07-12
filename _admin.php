@@ -26,7 +26,7 @@ $core->addBehavior('adminDashboardOptionsForm',array('dmScheduledBehaviors','adm
 # BEHAVIORS
 class dmScheduledBehaviors
 {
-	private static function getScheduledPosts($core,$nb,$large)
+	public static function getScheduledPosts($core,$nb,$large)
 	{
 		// Get last $nb scheduled posts
 		$params = array(
@@ -93,7 +93,8 @@ class dmScheduledBehaviors
 		'<script type="text/javascript">'."\n".
 		dcPage::jsVar('dotclear.dmScheduled_Monitor',$core->auth->user_prefs->dmscheduled->scheduled_monitor).
 		"</script>\n".
-		dcPage::jsLoad(urldecode(dcPage::getPF('dmScheduled/js/service.js')),$core->getVersion('dmScheduled'));
+		dcPage::jsLoad(urldecode(dcPage::getPF('dmScheduled/js/service.js')),$core->getVersion('dmScheduled')).
+		dcPage::cssLoad(urldecode(dcPage::getPF('dmScheduled/css/style.css')),'screen',$core->getVersion('dmScheduled'));
 	}
 
 	public static function adminDashboardContents($core,$contents)
