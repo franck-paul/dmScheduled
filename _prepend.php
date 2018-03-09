@@ -1,25 +1,26 @@
 <?php
-# -- BEGIN LICENSE BLOCK ----------------------------------
-# This file is part of dmScheduled, a plugin for Dotclear 2.
-#
-# Copyright (c) Franck Paul and contributors
-# carnet.franck.paul@gmail.com
-#
-# Licensed under the GPL version 2.0 license.
-# A copy of this license is available in LICENSE file or at
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-# -- END LICENSE BLOCK ------------------------------------
+/**
+ * @brief dmScheduled, a plugin for Dotclear 2
+ *
+ * @package Dotclear
+ * @subpackage Plugins
+ *
+ * @author Franck Paul and contributors
+ *
+ * @copyright Franck Paul carnet.franck.paul@gmail.com
+ * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
-if (!defined('DC_RC_PATH')) { return; }
+if (!defined('DC_RC_PATH')) {return;}
 
 // Public and Admin mode
 
-if (!defined('DC_CONTEXT_ADMIN')) { return false; }
+if (!defined('DC_CONTEXT_ADMIN')) {return false;}
 
 // Admin mode
 
-$__autoload['dmScheduledRest'] = dirname(__FILE__).'/_services.php';
+$__autoload['dmScheduledRest'] = dirname(__FILE__) . '/_services.php';
 
 // Register REST methods
-$core->rest->addFunction('dmScheduledCheck',array('dmScheduledRest','checkScheduled'));
-$core->rest->addFunction('dmLastScheduledRows',array('dmScheduledRest','getLastScheduledRows'));
+$core->rest->addFunction('dmScheduledCheck', array('dmScheduledRest', 'checkScheduled'));
+$core->rest->addFunction('dmLastScheduledRows', array('dmScheduledRest', 'getLastScheduledRows'));
