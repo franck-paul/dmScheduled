@@ -16,6 +16,23 @@ if (!defined('DC_CONTEXT_ADMIN')) {return;}
 class dmScheduledRest
 {
     /**
+     * Serve method to get number of scheduled posts for current blog.
+     *
+     * @param     core     <b>dcCore</b>     dcCore instance
+     * @param     get     <b>array</b>     cleaned $_GET
+     */
+    public static function getScheduledPostsCount($core, $get)
+    {
+        $count = $core->blog->getPosts(array('post_status' => -1), true)->f(0);
+        $str   = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
+
+        $rsp      = new xmlTag('count');
+        $rsp->ret = $str;
+
+        return $rsp;
+    }
+
+    /**
      * Serve method to check if some entries need to be published.
      *
      * @param    core    <b>dcCore</b>    dcCore instance

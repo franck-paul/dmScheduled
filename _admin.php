@@ -66,7 +66,7 @@ class dmScheduledBehaviors
         $count = $core->blog->getPosts(array('post_status' => -1), true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
-            return '</span></a> <br /><a href="posts.php?status=-1"><span>' . sprintf($str, $count);
+            return '</span></a> <br /><a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         } else {
             return '';
         }
@@ -93,6 +93,7 @@ class dmScheduledBehaviors
         return
         '<script type="text/javascript">' . "\n" .
         dcPage::jsVar('dotclear.dmScheduled_Monitor', $core->auth->user_prefs->dmscheduled->scheduled_monitor) .
+        dcPage::jsVar('dotclear.dmScheduled_Counter', $core->auth->user_prefs->dmscheduled->scheduled_posts_count) .
         "</script>\n" .
         dcPage::jsLoad(urldecode(dcPage::getPF('dmScheduled/js/service.js')), $core->getVersion('dmScheduled')) .
         dcPage::cssLoad(urldecode(dcPage::getPF('dmScheduled/css/style.css')), 'screen', $core->getVersion('dmScheduled'));
