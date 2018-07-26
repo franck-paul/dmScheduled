@@ -17,7 +17,7 @@ $this->registerModule(
     "Scheduled Dashboard Module",           // Name
     "Display scheduled posts on dashboard", // Description
     "Franck Paul",                          // Author
-    '0.3',                                  // Version
+    '0.4',                                  // Version
     array(
         'permissions' => 'admin',                                        // Permissions
         'type'        => 'plugin',                                       // Type
