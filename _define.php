@@ -19,8 +19,10 @@ $this->registerModule(
     "Franck Paul",                          // Author
     '0.4',                                  // Version
     array(
+        'requires'    => array(array('core', '2.14')),
         'permissions' => 'admin',                                        // Permissions
         'type'        => 'plugin',                                       // Type
+        'support'     => 'https://open-time.net/?q=dmScheduled',         // Support URL
         'settings'    => array('pref' => '#user-favorites.dmscheduled') // Settings
     )
 );
