@@ -24,7 +24,7 @@ class dmScheduledRest
     public static function getScheduledPostsCount($core, $get)
     {
         $count = $core->blog->getPosts(array('post_status' => -1), true)->f(0);
-        $str   = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
+        $str   = ($count ? sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count) : '');
 
         $rsp      = new xmlTag('count');
         $rsp->ret = $str;
