@@ -66,7 +66,7 @@ class dmScheduledBehaviors
         $count = $core->blog->getPosts(array('post_status' => -1), true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
-            return '</span></a> <br /><a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
+            return '</span></a> <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         } else {
             return '';
         }
