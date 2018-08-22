@@ -41,7 +41,7 @@ class dmScheduledBehaviors
         if (!$rs->isEmpty()) {
             $ret = '<ul>';
             while ($rs->fetch()) {
-                $ret .= '<li>';
+                $ret .= '<li class="line" id="dmsp' . $rs->post_id . '">';
                 $ret .= '<a href="post.php?id=' . $rs->post_id . '">' . $rs->post_title . '</a>';
                 if ($large) {
                     $ret .= ' (' .

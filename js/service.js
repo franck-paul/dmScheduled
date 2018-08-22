@@ -84,7 +84,47 @@ dotclear.dmScheduledCheck = function() {
   });
 };
 
+dotclear.dmScheduledPostsView = function(line, action) {
+  action = action || 'toggle';
+  var id = $(line).attr('id').substr(4);
+  var li = document.getElementById('dmspe' + id);
+  if (!li && (action == 'toggle' || action == 'open')) {
+    li = document.createElement('li');
+    li.id = 'dmspe' + id;
+    li.className = 'expand';
+    // Get content
+    $.get('services.php', {
+      f: 'getPostById',
+      id: id,
+      post_type: ''
+    }, function(data) {
+      var rsp = $(data).children('rsp')[0];
+      if (rsp.attributes[0].value == 'ok') {
+        var content = $(rsp).find('post_display_excerpt').text() + ' ' + $(rsp).find('post_display_content').text();
+        if (content) {
+          $(li).append(content);
+        }
+      } else {
+        window.alert($(rsp).find('message').text());
+      }
+    });
+    $(line).toggleClass('expand');
+    line.parentNode.insertBefore(li, line.nextSibling);
+  } else if (li && li.style.display == 'none' && (action == 'toggle' || action == 'open')) {
+    $(li).css('display', 'block');
+    $(line).addClass('expand');
+  } else if (li && li.style.display != 'none' && (action == 'toggle' || action == 'close')) {
+    $(li).css('display', 'none');
+    $(line).removeClass('expand');
+  }
+};
+
 $(function() {
+  $.expandContent({
+    lines: $('#scheduled-posts li.line'),
+    callback: dotclear.dmScheduledPostsView
+  });
+  $('#scheduled-posts ul').addClass('expandable');
   if (dotclear.dmScheduled_Monitor) {
     $('#scheduled-posts').addClass('badgeable');
     // Auto refresh requested : Set 5 minutes interval between two checks for publishing scheduled entries
