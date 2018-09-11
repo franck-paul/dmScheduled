@@ -25,7 +25,7 @@ dotclear.dmScheduledPostsCount = function() {
         } else {
           if (nb != '') {
             // Add full element (link + counter)
-            var icon = $('#dashboard-main #icons p a[href="posts.php"]');
+            icon = $('#dashboard-main #icons p a[href="posts.php"]');
             if (icon.length) {
               var xml = ' <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">' + nb + '</span></a>';
               icon.after(xml);
@@ -63,9 +63,6 @@ dotclear.dmScheduledCheck = function() {
         } else {
           var xml = $('rsp>rows', data).attr('list');
           // Replace current list with the new one
-          if ($('#scheduled-posts span.badge').length) {
-            $('#scheduled-posts span.badge').remove();
-          }
           if ($('#scheduled-posts ul').length) {
             $('#scheduled-posts ul').remove();
           }
@@ -75,9 +72,16 @@ dotclear.dmScheduledCheck = function() {
           // Add current hour in badge on module
           var now = new Date();
           var time = now.toLocaleTimeString();
-          xml = '<span class="badge badge-block badge-info">' + time + '</span>' + xml;
           // Display module content
           $('#scheduled-posts h3').after(xml);
+          // Display badge with current time
+          dotclear.badge(
+            $('#scheduled-posts'), {
+              id: 'dmsp',
+              value: time,
+              type: 'info'
+            }
+          );
         }
       });
     }
@@ -126,7 +130,6 @@ $(function() {
   });
   $('#scheduled-posts ul').addClass('expandable');
   if (dotclear.dmScheduled_Monitor) {
-    $('#scheduled-posts').addClass('badgeable');
     // Auto refresh requested : Set 5 minutes interval between two checks for publishing scheduled entries
     dotclear.dmScheduled_Timer = setInterval(dotclear.dmScheduledCheck, 60 * 5 * 1000);
   }
