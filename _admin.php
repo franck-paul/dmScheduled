@@ -17,12 +17,12 @@ if (!defined('DC_CONTEXT_ADMIN')) {return;}
 __('Scheduled Dashboard Module') . __('Display scheduled posts on dashboard');
 
 // Dashboard behaviours
-$core->addBehavior('adminDashboardContents', array('dmScheduledBehaviors', 'adminDashboardContents'));
-$core->addBehavior('adminDashboardHeaders', array('dmScheduledBehaviors', 'adminDashboardHeaders'));
-$core->addBehavior('adminDashboardFavsIcon', array('dmScheduledBehaviors', 'adminDashboardFavsIcon'));
+$core->addBehavior('adminDashboardContents', ['dmScheduledBehaviors', 'adminDashboardContents']);
+$core->addBehavior('adminDashboardHeaders', ['dmScheduledBehaviors', 'adminDashboardHeaders']);
+$core->addBehavior('adminDashboardFavsIcon', ['dmScheduledBehaviors', 'adminDashboardFavsIcon']);
 
-$core->addBehavior('adminAfterDashboardOptionsUpdate', array('dmScheduledBehaviors', 'adminAfterDashboardOptionsUpdate'));
-$core->addBehavior('adminDashboardOptionsForm', array('dmScheduledBehaviors', 'adminDashboardOptionsForm'));
+$core->addBehavior('adminAfterDashboardOptionsUpdate', ['dmScheduledBehaviors', 'adminAfterDashboardOptionsUpdate']);
+$core->addBehavior('adminDashboardOptionsForm', ['dmScheduledBehaviors', 'adminDashboardOptionsForm']);
 
 # BEHAVIORS
 class dmScheduledBehaviors
@@ -30,10 +30,10 @@ class dmScheduledBehaviors
     public static function getScheduledPosts($core, $nb, $large)
     {
         // Get last $nb scheduled posts
-        $params = array(
+        $params = [
             'post_status' => -1,
             'order'       => 'post_dt ASC'
-        );
+        ];
         if ((integer) $nb > 0) {
             $params['limit'] = (integer) $nb;
         }
@@ -63,7 +63,7 @@ class dmScheduledBehaviors
 
     private static function countScheduledPosts($core)
     {
-        $count = $core->blog->getPosts(array('post_status' => -1), true)->f(0);
+        $count = $core->blog->getPosts(['post_status' => -1], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
             return '</span></a> <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
@@ -111,7 +111,7 @@ class dmScheduledBehaviors
                 $core->auth->user_prefs->dmscheduled->scheduled_posts_nb,
                 $core->auth->user_prefs->dmscheduled->scheduled_posts_large);
             $ret .= '</div>';
-            $contents[] = new ArrayObject(array($ret));
+            $contents[] = new ArrayObject([$ret]);
         }
     }
 
@@ -138,7 +138,7 @@ class dmScheduledBehaviors
         // Add fieldset for plugin options
         $core->auth->user_prefs->addWorkspace('dmscheduled');
 
-        echo '<div id="dmscheduled" class="fieldset"><h4>' . __('Scheduled posts on dashboard') . '</h4>' .
+        echo '<div class="fieldset" id="dmscheduled"><h4>' . __('Scheduled posts on dashboard') . '</h4>' .
 
         '<p>' .
         form::checkbox('dmscheduled_posts_count', 1, $core->auth->user_prefs->dmscheduled->scheduled_posts_count) . ' ' .
