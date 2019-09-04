@@ -149,7 +149,7 @@ class dmScheduledBehaviors
         '<label for="dmscheduled_posts" class="classic">' . __('Display scheduled posts') . '</label></p>' .
 
         '<p><label for="dmscheduled_posts_nb" class="classic">' . __('Number of scheduled posts to display:') . '</label>' .
-        form::field('dmscheduled_posts_nb', 2, 3, (integer) $core->auth->user_prefs->dmscheduled->scheduled_posts_nb) .
+        form::number('dmscheduled_posts_nb', 1, 999, (integer) $core->auth->user_prefs->dmscheduled->scheduled_posts_nb) .
         '</p>' .
 
         '<p>' .
