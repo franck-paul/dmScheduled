@@ -88,6 +88,12 @@ dotclear.dmScheduledCheck = function() {
                   type: 'info'
                 }
               );
+              // Bind every new lines for viewing scheduled post content
+              $.expandContent({
+                lines: $('#scheduled-posts li.line'),
+                callback: dotclear.dmScheduledPostsView
+              });
+              $('#scheduled-posts ul').addClass('expandable');
             }
           })
           .fail(function(jqXHR, textStatus, errorThrown) {
