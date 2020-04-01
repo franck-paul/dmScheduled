@@ -1,4 +1,4 @@
-/*global $, dotclear */
+/*global $, dotclear, getData */
 'use strict';
 
 dotclear.dmScheduledPostsCount = function() {
@@ -146,6 +146,7 @@ dotclear.dmScheduledPostsView = function(line, action, e) {
 };
 
 $(function() {
+  Object.assign(dotclear, getData('dm_scheduled'));
   $.expandContent({
     lines: $('#scheduled-posts li.line'),
     callback: dotclear.dmScheduledPostsView

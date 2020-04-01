@@ -91,10 +91,10 @@ class dmScheduledBehaviors
         $core->auth->user_prefs->addWorkspace('dmscheduled');
 
         return
-        '<script type="text/javascript">' . "\n" .
-        dcPage::jsVar('dotclear.dmScheduled_Monitor', $core->auth->user_prefs->dmscheduled->scheduled_monitor) .
-        dcPage::jsVar('dotclear.dmScheduled_Counter', $core->auth->user_prefs->dmscheduled->scheduled_posts_count) .
-        "</script>\n" .
+        dcPage::jsJson('dm_scheduled', [
+            'dmScheduled_Monitor' => $core->auth->user_prefs->dmscheduled->scheduled_monitor,
+            'dmScheduled_Counter' => $core->auth->user_prefs->dmscheduled->scheduled_posts_count
+        ]) .
         dcPage::jsLoad(urldecode(dcPage::getPF('dmScheduled/js/service.js')), $core->getVersion('dmScheduled')) .
         dcPage::cssLoad(urldecode(dcPage::getPF('dmScheduled/css/style.css')), 'screen', $core->getVersion('dmScheduled'));
     }
