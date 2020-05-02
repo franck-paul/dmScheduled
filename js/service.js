@@ -13,7 +13,7 @@ dotclear.dmScheduledPostsCount = function() {
         window.console.log('Dotclear REST server error');
       } else {
         const nb = $('rsp>count', data).attr('ret');
-        if (nb != dotclear.dbScheduledPostsCount_Counter) {
+        if (nb !== undefined && nb != dotclear.dbScheduledPostsCount_Counter) {
           // First pass or counter changed
           let icon = $('#dashboard-main #icons p a[href="posts.php?status=-1"]');
           if (icon.length) {

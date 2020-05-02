@@ -13,58 +13,45 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../git-plugins/dmScheduled/_admin.php:17
 msgid "Display scheduled posts on dashboard"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:17
 msgid "Scheduled Dashboard Module"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:57
 msgid "See all scheduled posts"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:60
 msgid "No scheduled post"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:68
-#: ../git-plugins/dmScheduled/_services.php:27
 #, php-format
 msgid "(%d scheduled post)"
 msgid_plural "(%d scheduled posts)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../git-plugins/dmScheduled/_admin.php:109
 msgid "Scheduled posts"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:141
 msgid "Scheduled posts on dashboard"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:145
 msgid "Display count of scheduled posts on posts dashboard icon"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:149
 msgid "Display scheduled posts"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:151
 msgid "Number of scheduled posts to display:"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:157
 msgid "Small screen"
 msgstr ""
 
-#: ../git-plugins/dmScheduled/_admin.php:161
 msgid "Monitor"
 msgstr ""
