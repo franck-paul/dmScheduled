@@ -10,16 +10,17 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 $this->registerModule(
-    "Scheduled Dashboard Module",           // Name
-    "Display scheduled posts on dashboard", // Description
-    "Franck Paul",                          // Author
-    '0.6.1',                                // Version
+    'Scheduled Dashboard Module',           // Name
+    'Display scheduled posts on dashboard', // Description
+    'Franck Paul',                          // Author
+    '0.7',                                  // Version
     [
-        'requires'    => [['core', '2.16']],
+        'requires'    => [['core', '2.19']],
         'permissions' => 'admin',                                      // Permissions
         'type'        => 'plugin',                                     // Type
         'details'     => 'https://open-time.net/?q=dmScheduled',       // Details URL

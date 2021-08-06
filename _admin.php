@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_CONTEXT_ADMIN')) {return;}
+if (!defined('DC_CONTEXT_ADMIN')) {
+    return;
+}
 
 // dead but useful code, in order to have translations
 __('Scheduled Dashboard Module') . __('Display scheduled posts on dashboard');
@@ -55,10 +56,11 @@ class dmScheduledBehaviors
             }
             $ret .= '</ul>';
             $ret .= '<p><a href="posts.php?status=-1">' . __('See all scheduled posts') . '</a></p>';
+
             return $ret;
-        } else {
-            return '<p>' . __('No scheduled post') . '</p>';
         }
+
+        return '<p>' . __('No scheduled post') . '</p>';
     }
 
     private static function countScheduledPosts($core)
@@ -66,10 +68,11 @@ class dmScheduledBehaviors
         $count = $core->blog->getPosts(['post_status' => -1], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
+
             return '</span></a> <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     public static function adminDashboardFavsIcon($core, $name, $icon)
@@ -121,6 +124,7 @@ class dmScheduledBehaviors
 
         // Get and store user's prefs for plugin options
         $core->auth->user_prefs->addWorkspace('dmscheduled');
+
         try {
             // Scheduled posts
             $core->auth->user_prefs->dmscheduled->put('scheduled_posts', !empty($_POST['dmscheduled_posts']), 'boolean');
@@ -162,5 +166,4 @@ class dmScheduledBehaviors
 
             '</div>';
     }
-
 }

@@ -1,12 +1,12 @@
-/*global $, dotclear, getData */
+/*global $, dotclear */
 'use strict';
 
-dotclear.dmScheduledPostsCount = function() {
+dotclear.dmScheduledPostsCount = function () {
   $.get('services.php', {
-      f: 'dmScheduledPostsCount',
-      xd_check: dotclear.nonce,
-    })
-    .done(function(data) {
+    f: 'dmScheduledPostsCount',
+    xd_check: dotclear.nonce,
+  })
+    .done(function (data) {
       if ($('rsp[status=failed]', data).length > 0) {
         // For debugging purpose only:
         // console.log($('rsp',data).attr('message'));
@@ -37,20 +37,20 @@ dotclear.dmScheduledPostsCount = function() {
         }
       }
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
+    .fail(function (jqXHR, textStatus, errorThrown) {
       window.console.log(`AJAX ${textStatus} (status: ${jqXHR.status} ${errorThrown})`);
     })
-    .always(function() {
+    .always(function () {
       // Nothing here
     });
 };
 
-dotclear.dmScheduledCheck = function() {
+dotclear.dmScheduledCheck = function () {
   $.get('services.php', {
-      f: 'dmScheduledCheck',
-      xd_check: dotclear.nonce
-    })
-    .done(function(data) {
+    f: 'dmScheduledCheck',
+    xd_check: dotclear.nonce,
+  })
+    .done(function (data) {
       if ($('rsp[status=failed]', data).length > 0) {
         // For debugging purpose only:
         // console.log($('rsp',data).attr('message'));
@@ -58,10 +58,10 @@ dotclear.dmScheduledCheck = function() {
       } else {
         // Refresh list of last scheduled posts
         $.get('services.php', {
-            f: 'dmLastScheduledRows',
-            xd_check: dotclear.nonce
-          })
-          .done(function(data) {
+          f: 'dmLastScheduledRows',
+          xd_check: dotclear.nonce,
+        })
+          .done(function (data) {
             if ($('rsp[status=failed]', data).length > 0) {
               // For debugging purpose only:
               // console.log($('rsp',data).attr('message'));
@@ -81,38 +81,36 @@ dotclear.dmScheduledCheck = function() {
               // Display module content
               $('#scheduled-posts h3').after(xml);
               // Display badge with current time
-              dotclear.badge(
-                $('#scheduled-posts'), {
-                  id: 'dmsp',
-                  value: time,
-                  type: 'info'
-                }
-              );
+              dotclear.badge($('#scheduled-posts'), {
+                id: 'dmsp',
+                value: time,
+                type: 'info',
+              });
               // Bind every new lines for viewing scheduled post content
               $.expandContent({
                 lines: $('#scheduled-posts li.line'),
-                callback: dotclear.dmScheduledPostsView
+                callback: dotclear.dmScheduledPostsView,
               });
               $('#scheduled-posts ul').addClass('expandable');
             }
           })
-          .fail(function(jqXHR, textStatus, errorThrown) {
+          .fail(function (jqXHR, textStatus, errorThrown) {
             window.console.log(`AJAX ${textStatus} (status: ${jqXHR.status} ${errorThrown})`);
           })
-          .always(function() {
+          .always(function () {
             // Nothing here
           });
       }
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
+    .fail(function (jqXHR, textStatus, errorThrown) {
       window.console.log(`AJAX ${textStatus} (status: ${jqXHR.status} ${errorThrown})`);
     })
-    .always(function() {
+    .always(function () {
       // Nothing here
     });
 };
 
-dotclear.dmScheduledPostsView = function(line, action, e) {
+dotclear.dmScheduledPostsView = function (line, action, e) {
   action = action || 'toggle';
   if ($(line).attr('id') == undefined) {
     return;
@@ -124,32 +122,36 @@ dotclear.dmScheduledPostsView = function(line, action, e) {
 
   if (!li) {
     // Get content
-    dotclear.getEntryContent(postId, function(content) {
-      if (content) {
-        li = document.createElement('li');
-        li.id = lineId;
-        li.className = 'expand';
-        $(li).append(content);
-        $(line).addClass('expand');
-        line.parentNode.insertBefore(li, line.nextSibling);
-      } else {
-        $(line).toggleClass('expand');
+    dotclear.getEntryContent(
+      postId,
+      function (content) {
+        if (content) {
+          li = document.createElement('li');
+          li.id = lineId;
+          li.className = 'expand';
+          $(li).append(content);
+          $(line).addClass('expand');
+          line.parentNode.insertBefore(li, line.nextSibling);
+        } else {
+          $(line).toggleClass('expand');
+        }
+      },
+      {
+        clean: e.metaKey,
+        length: 300,
       }
-    }, {
-      clean: (e.metaKey),
-      length: 300
-    });
+    );
   } else {
     $(li).toggle();
     $(line).toggleClass('expand');
   }
 };
 
-$(function() {
-  Object.assign(dotclear, getData('dm_scheduled'));
+$(function () {
+  Object.assign(dotclear, dotclear.getData('dm_scheduled'));
   $.expandContent({
     lines: $('#scheduled-posts li.line'),
-    callback: dotclear.dmScheduledPostsView
+    callback: dotclear.dmScheduledPostsView,
   });
   $('#scheduled-posts ul').addClass('expandable');
   if (dotclear.dmScheduled_Monitor) {
