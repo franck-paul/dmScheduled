@@ -23,10 +23,12 @@ $this->registerModule(
         'requires'    => [['core', '2.19']],
         'permissions' => 'admin',                                      // Permissions
         'type'        => 'plugin',                                     // Type
-        'details'     => 'https://open-time.net/?q=dmScheduled',       // Details URL
-        'support'     => 'https://github.com/franck-paul/dmScheduled', // Support URL
         'settings'    => [                                             // Settings
             'pref' => '#user-favorites.dmscheduled'
-        ]
+        ],
+
+        'details'    => 'https://open-time.net/?q=dmScheduled',       // Details URL
+        'support'    => 'https://github.com/franck-paul/dmScheduled', // Support URL
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/main/dcstore.xml'
     ]
 );
