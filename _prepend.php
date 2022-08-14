@@ -22,9 +22,9 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 // Admin mode
 
-$__autoload['dmScheduledRest'] = dirname(__FILE__) . '/_services.php';
+$__autoload['dmScheduledRest'] = __DIR__ . '/_services.php';
 
 // Register REST methods
-$core->rest->addFunction('dmScheduledPostsCount', ['dmScheduledRest', 'getScheduledPostsCount']);
-$core->rest->addFunction('dmScheduledCheck', ['dmScheduledRest', 'checkScheduled']);
-$core->rest->addFunction('dmLastScheduledRows', ['dmScheduledRest', 'getLastScheduledRows']);
+dcCore::app()->rest->addFunction('dmScheduledPostsCount', ['dmScheduledRest', 'getScheduledPostsCount']);
+dcCore::app()->rest->addFunction('dmScheduledCheck', ['dmScheduledRest', 'checkScheduled']);
+dcCore::app()->rest->addFunction('dmLastScheduledRows', ['dmScheduledRest', 'getLastScheduledRows']);

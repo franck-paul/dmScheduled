@@ -18,17 +18,17 @@ $this->registerModule(
     'Scheduled Dashboard Module',           // Name
     'Display scheduled posts on dashboard', // Description
     'Franck Paul',                          // Author
-    '0.7',                                  // Version
+    '0.8',
     [
-        'requires'    => [['core', '2.19']],
+        'requires'    => [['core', '2.23']],
         'permissions' => 'admin',                                      // Permissions
         'type'        => 'plugin',                                     // Type
         'settings'    => [                                             // Settings
-            'pref' => '#user-favorites.dmscheduled'
+            'pref' => '#user-favorites.dmscheduled',
         ],
 
         'details'    => 'https://open-time.net/?q=dmScheduled',       // Details URL
         'support'    => 'https://github.com/franck-paul/dmScheduled', // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/master/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/master/dcstore.xml',
     ]
 );

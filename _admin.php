@@ -18,12 +18,12 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 __('Scheduled Dashboard Module') . __('Display scheduled posts on dashboard');
 
 // Dashboard behaviours
-$core->addBehavior('adminDashboardContents', ['dmScheduledBehaviors', 'adminDashboardContents']);
-$core->addBehavior('adminDashboardHeaders', ['dmScheduledBehaviors', 'adminDashboardHeaders']);
-$core->addBehavior('adminDashboardFavsIcon', ['dmScheduledBehaviors', 'adminDashboardFavsIcon']);
+dcCore::app()->addBehavior('adminDashboardContents', ['dmScheduledBehaviors', 'adminDashboardContents']);
+dcCore::app()->addBehavior('adminDashboardHeaders', ['dmScheduledBehaviors', 'adminDashboardHeaders']);
+dcCore::app()->addBehavior('adminDashboardFavsIcon', ['dmScheduledBehaviors', 'adminDashboardFavsIcon']);
 
-$core->addBehavior('adminAfterDashboardOptionsUpdate', ['dmScheduledBehaviors', 'adminAfterDashboardOptionsUpdate']);
-$core->addBehavior('adminDashboardOptionsForm', ['dmScheduledBehaviors', 'adminDashboardOptionsForm']);
+dcCore::app()->addBehavior('adminAfterDashboardOptionsUpdate', ['dmScheduledBehaviors', 'adminAfterDashboardOptionsUpdate']);
+dcCore::app()->addBehavior('adminDashboardOptionsForm', ['dmScheduledBehaviors', 'adminDashboardOptionsForm']);
 
 # BEHAVIORS
 class dmScheduledBehaviors
@@ -33,12 +33,12 @@ class dmScheduledBehaviors
         // Get last $nb scheduled posts
         $params = [
             'post_status' => -1,
-            'order'       => 'post_dt ASC'
+            'order'       => 'post_dt ASC',
         ];
-        if ((integer) $nb > 0) {
-            $params['limit'] = (integer) $nb;
+        if ((int) $nb > 0) {
+            $params['limit'] = (int) $nb;
         }
-        $rs = $core->blog->getPosts($params, false);
+        $rs = dcCore::app()->blog->getPosts($params, false);
         if (!$rs->isEmpty()) {
             $ret = '<ul>';
             while ($rs->fetch()) {
@@ -47,8 +47,8 @@ class dmScheduledBehaviors
                 if ($large) {
                     $ret .= ' (' .
                     __('by') . ' ' . $rs->user_id . ' ' . __('on') . ' ' .
-                    dt::dt2str($core->blog->settings->system->date_format, $rs->post_dt) . ' ' .
-                    dt::dt2str($core->blog->settings->system->time_format, $rs->post_dt) . ')';
+                    dt::dt2str(dcCore::app()->blog->settings->system->date_format, $rs->post_dt) . ' ' .
+                    dt::dt2str(dcCore::app()->blog->settings->system->time_format, $rs->post_dt) . ')';
                 } else {
                     $ret .= ' (' . dt::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt) . ')';
                 }
@@ -65,7 +65,7 @@ class dmScheduledBehaviors
 
     private static function countScheduledPosts($core)
     {
-        $count = $core->blog->getPosts(['post_status' => -1], true)->f(0);
+        $count = dcCore::app()->blog->getPosts(['post_status' => -1], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
 
@@ -77,10 +77,10 @@ class dmScheduledBehaviors
 
     public static function adminDashboardFavsIcon($core, $name, $icon)
     {
-        $core->auth->user_prefs->addWorkspace('dmscheduled');
-        if ($core->auth->user_prefs->dmscheduled->scheduled_posts_count && $name == 'posts') {
+        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
+        if (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_count && $name == 'posts') {
             // Hack posts title if there is at least one scheduled post
-            $str = dmScheduledBehaviors::countScheduledPosts($core);
+            $str = dmScheduledBehaviors::countScheduledPosts(dcCore::app());
             if ($str != '') {
                 $icon[0] .= $str;
             }
@@ -89,30 +89,30 @@ class dmScheduledBehaviors
 
     public static function adminDashboardHeaders()
     {
-        global $core;
-
-        $core->auth->user_prefs->addWorkspace('dmscheduled');
+        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
 
         return
         dcPage::jsJson('dm_scheduled', [
-            'dmScheduled_Monitor' => $core->auth->user_prefs->dmscheduled->scheduled_monitor,
-            'dmScheduled_Counter' => $core->auth->user_prefs->dmscheduled->scheduled_posts_count
+            'dmScheduled_Monitor' => dcCore::app()->auth->user_prefs->dmscheduled->scheduled_monitor,
+            'dmScheduled_Counter' => dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_count,
         ]) .
-        dcPage::jsLoad(urldecode(dcPage::getPF('dmScheduled/js/service.js')), $core->getVersion('dmScheduled')) .
-        dcPage::cssLoad(urldecode(dcPage::getPF('dmScheduled/css/style.css')), 'screen', $core->getVersion('dmScheduled'));
+        dcPage::jsModuleLoad('dmScheduled/js/service.js', dcCore::app()->getVersion('dmScheduled')) .
+        dcPage::cssModuleLoad('dmScheduled/css/style.css', 'screen', dcCore::app()->getVersion('dmScheduled'));
     }
 
     public static function adminDashboardContents($core, $contents)
     {
         // Add large modules to the contents stack
-        $core->auth->user_prefs->addWorkspace('dmscheduled');
-        if ($core->auth->user_prefs->dmscheduled->scheduled_posts) {
-            $class = ($core->auth->user_prefs->dmscheduled->scheduled_posts_large ? 'medium' : 'small');
+        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
+        if (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts) {
+            $class = (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_large ? 'medium' : 'small');
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
             '<h3>' . '<img src="' . urldecode(dcPage::getPF('dmScheduled/icon.png')) . '" alt="" />' . ' ' . __('Scheduled posts') . '</h3>';
-            $ret .= dmScheduledBehaviors::getScheduledPosts($core,
-                $core->auth->user_prefs->dmscheduled->scheduled_posts_nb,
-                $core->auth->user_prefs->dmscheduled->scheduled_posts_large);
+            $ret .= dmScheduledBehaviors::getScheduledPosts(
+                dcCore::app(),
+                dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_nb,
+                dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_large
+            );
             $ret .= '</div>';
             $contents[] = new ArrayObject([$ret]);
         }
@@ -120,48 +120,46 @@ class dmScheduledBehaviors
 
     public static function adminAfterDashboardOptionsUpdate($userID)
     {
-        global $core;
-
         // Get and store user's prefs for plugin options
-        $core->auth->user_prefs->addWorkspace('dmscheduled');
+        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
 
         try {
             // Scheduled posts
-            $core->auth->user_prefs->dmscheduled->put('scheduled_posts', !empty($_POST['dmscheduled_posts']), 'boolean');
-            $core->auth->user_prefs->dmscheduled->put('scheduled_posts_nb', (integer) $_POST['dmscheduled_posts_nb'], 'integer');
-            $core->auth->user_prefs->dmscheduled->put('scheduled_posts_large', empty($_POST['dmscheduled_posts_small']), 'boolean');
-            $core->auth->user_prefs->dmscheduled->put('scheduled_posts_count', !empty($_POST['dmscheduled_posts_count']), 'boolean');
-            $core->auth->user_prefs->dmscheduled->put('scheduled_monitor', !empty($_POST['dmscheduled_monitor']), 'boolean');
+            dcCore::app()->auth->user_prefs->dmscheduled->put('scheduled_posts', !empty($_POST['dmscheduled_posts']), 'boolean');
+            dcCore::app()->auth->user_prefs->dmscheduled->put('scheduled_posts_nb', (int) $_POST['dmscheduled_posts_nb'], 'integer');
+            dcCore::app()->auth->user_prefs->dmscheduled->put('scheduled_posts_large', empty($_POST['dmscheduled_posts_small']), 'boolean');
+            dcCore::app()->auth->user_prefs->dmscheduled->put('scheduled_posts_count', !empty($_POST['dmscheduled_posts_count']), 'boolean');
+            dcCore::app()->auth->user_prefs->dmscheduled->put('scheduled_monitor', !empty($_POST['dmscheduled_monitor']), 'boolean');
         } catch (Exception $e) {
-            $core->error->add($e->getMessage());
+            dcCore::app()->error->add($e->getMessage());
         }
     }
 
     public static function adminDashboardOptionsForm($core)
     {
         // Add fieldset for plugin options
-        $core->auth->user_prefs->addWorkspace('dmscheduled');
+        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
 
         echo '<div class="fieldset" id="dmscheduled"><h4>' . __('Scheduled posts on dashboard') . '</h4>' .
 
         '<p>' .
-        form::checkbox('dmscheduled_posts_count', 1, $core->auth->user_prefs->dmscheduled->scheduled_posts_count) . ' ' .
+        form::checkbox('dmscheduled_posts_count', 1, dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_count) . ' ' .
         '<label for="dmscheduled_posts_count" class="classic">' . __('Display count of scheduled posts on posts dashboard icon') . '</label></p>' .
 
         '<p>' .
-        form::checkbox('dmscheduled_posts', 1, $core->auth->user_prefs->dmscheduled->scheduled_posts) . ' ' .
+        form::checkbox('dmscheduled_posts', 1, dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts) . ' ' .
         '<label for="dmscheduled_posts" class="classic">' . __('Display scheduled posts') . '</label></p>' .
 
         '<p><label for="dmscheduled_posts_nb" class="classic">' . __('Number of scheduled posts to display:') . '</label>' .
-        form::number('dmscheduled_posts_nb', 1, 999, (integer) $core->auth->user_prefs->dmscheduled->scheduled_posts_nb) .
+        form::number('dmscheduled_posts_nb', 1, 999, dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_nb) .
         '</p>' .
 
         '<p>' .
-        form::checkbox('dmscheduled_posts_small', 1, !$core->auth->user_prefs->dmscheduled->scheduled_posts_large) . ' ' .
+        form::checkbox('dmscheduled_posts_small', 1, !dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_large) . ' ' .
         '<label for="dmscheduled_posts_small" class="classic">' . __('Small screen') . '</label></p>' .
 
         '<p>' .
-        form::checkbox('dmscheduled_monitor', 1, $core->auth->user_prefs->dmscheduled->scheduled_monitor) . ' ' .
+        form::checkbox('dmscheduled_monitor', 1, dcCore::app()->auth->user_prefs->dmscheduled->scheduled_monitor) . ' ' .
         '<label for="dmscheduled_monitor" class="classic">' . __('Monitor') . '</label></p>' .
 
             '</div>';

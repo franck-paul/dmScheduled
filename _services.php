@@ -17,63 +17,57 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 class dmScheduledRest
 {
     /**
-     * Serve method to get number of scheduled posts for current blog.
+     * Gets the scheduled posts count.
      *
-     * @param     core     <b>dcCore</b>     dcCore instance
-     * @param     get     <b>array</b>     cleaned $_GET
+     * @param      array   $get    The get
+     *
+     * @return     xmlTag  The scheduled posts count.
      */
-    public static function getScheduledPostsCount($core, $get)
+    public static function getScheduledPostsCount($get)
     {
-        $count = $core->blog->getPosts(['post_status' => -1], true)->f(0);
-        $str   = ($count ? sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count) : '');
+        $count = dcCore::app()->blog->getPosts(['post_status' => -1], true)->f(0);
 
-        $rsp      = new xmlTag('count');
-        $rsp->ret = $str;
-
-        return $rsp;
+        return [
+            'ret'   => true,
+            'count' => $count ? sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count) : '',
+        ];
     }
 
     /**
      * Serve method to check if some entries need to be published.
      *
-     * @param    core    <b>dcCore</b>    dcCore instance
-     * @param    get        <b>array</b>    cleaned $_GET
+     * @param      array   $get    The get
      *
-     * @return    <b>xmlTag</b>    XML representation of response
+     * @return     xmlTag  The xml tag.
      */
-    public static function checkScheduled($core, $get)
+    public static function checkScheduled($get)
     {
-        global $core;
+        dcCore::app()->blog->publishScheduledEntries();
 
-        $core->blog->publishScheduledEntries();
-
-        $rsp      = new xmlTag('check');
-        $rsp->ret = true;
-
-        return $rsp;
+        return [
+            'ret' => true,
+        ];
     }
 
     /**
-     * Serve method to get last scheduled rows for current blog.
+     * Gets the last scheduled rows.
      *
-     * @param    core    <b>dcCore</b>    dcCore instance
-     * @param    get        <b>array</b>    cleaned $_GET
+     * @param      array   $get    The get
      *
-     * @return    <b>xmlTag</b>    XML representation of response
+     * @return     xmlTag  The last scheduled rows.
      */
-    public static function getLastScheduledRows($core, $get)
+    public static function getLastScheduledRows($get)
     {
-        $rsp      = new xmlTag('rows');
-        $rsp->ret = 0;
+        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
+        $list = dmScheduledBehaviors::getScheduledPosts(
+            dcCore::app(),
+            dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_nb,
+            dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_large
+        );
 
-        $core->auth->user_prefs->addWorkspace('dmscheduled');
-        $ret = dmScheduledBehaviors::getScheduledPosts($core,
-            $core->auth->user_prefs->dmscheduled->scheduled_posts_nb,
-            $core->auth->user_prefs->dmscheduled->scheduled_posts_large);
-
-        $rsp->list = $ret;
-        $rsp->ret  = 1;
-
-        return $rsp;
+        return [
+            'ret'  => true,
+            'list' => $list,
+        ];
     }
 }
