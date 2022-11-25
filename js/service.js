@@ -5,35 +5,39 @@ dotclear.dmScheduledPostsCount = () => {
   dotclear.services(
     'dmScheduledPostsCount',
     (data) => {
-      const response = JSON.parse(data);
-      if (response?.success) {
-        if (response?.payload.ret) {
-          // Replace current counters
-          const nb = response.payload.count;
-          if (nb !== undefined && nb != dotclear.dbScheduledPostsCount_Counter) {
-            // First pass or counter changed
-            let icon = $('#dashboard-main #icons p a[href="posts.php?status=-1"]');
-            if (icon.length) {
-              // Update count if exists
-              const nb_label = icon.children('span.db-icon-title-dm-scheduled');
-              if (nb_label.length) {
-                nb_label.text(nb);
-              }
-            } else if (nb != '') {
-              // Add full element (link + counter)
-              icon = $('#dashboard-main #icons p a[href="posts.php"]');
+      try {
+        const response = JSON.parse(data);
+        if (response?.success) {
+          if (response?.payload.ret) {
+            // Replace current counters
+            const nb = response.payload.count;
+            if (nb !== undefined && nb != dotclear.dbScheduledPostsCount_Counter) {
+              // First pass or counter changed
+              let icon = $('#dashboard-main #icons p a[href="posts.php?status=-1"]');
               if (icon.length) {
-                const xml = ` <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">${nb}</span></a>`;
-                icon.after(xml);
+                // Update count if exists
+                const nb_label = icon.children('span.db-icon-title-dm-scheduled');
+                if (nb_label.length) {
+                  nb_label.text(nb);
+                }
+              } else if (nb != '') {
+                // Add full element (link + counter)
+                icon = $('#dashboard-main #icons p a[href="posts.php"]');
+                if (icon.length) {
+                  const xml = ` <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">${nb}</span></a>`;
+                  icon.after(xml);
+                }
               }
+              // Store current counter
+              dotclear.dbScheduledPostsCount_Counter = nb;
             }
-            // Store current counter
-            dotclear.dbScheduledPostsCount_Counter = nb;
           }
+        } else {
+          console.log(dotclear.debug && response?.message ? response.message : 'Dotclear REST server error');
+          return;
         }
-      } else {
-        console.log(dotclear.debug && response?.message ? response.message : 'Dotclear REST server error');
-        return;
+      } catch (e) {
+        console.log(e);
       }
     },
     (error) => {
@@ -48,37 +52,41 @@ dotclear.dmLastScheduledRows = () => {
   dotclear.services(
     'dmLastScheduledRows',
     (data) => {
-      const response = JSON.parse(data);
-      if (response?.success) {
-        if (response?.payload.ret) {
-          // Replace current list with the new one
-          if ($('#scheduled-posts ul').length) {
-            $('#scheduled-posts ul').remove();
+      try {
+        const response = JSON.parse(data);
+        if (response?.success) {
+          if (response?.payload.ret) {
+            // Replace current list with the new one
+            if ($('#scheduled-posts ul').length) {
+              $('#scheduled-posts ul').remove();
+            }
+            if ($('#scheduled-posts p').length) {
+              $('#scheduled-posts p').remove();
+            }
+            // Add current hour in badge on module
+            const now = new Date();
+            const time = now.toLocaleTimeString();
+            // Display module content
+            $('#scheduled-posts h3').after(response.payload.list);
+            // Display badge with current time
+            dotclear.badge($('#scheduled-posts'), {
+              id: 'dmsp',
+              value: time,
+              type: 'info',
+            });
+            // Bind every new lines for viewing scheduled post content
+            $.expandContent({
+              lines: $('#scheduled-posts li.line'),
+              callback: dotclear.dmScheduledPostsView,
+            });
+            $('#scheduled-posts ul').addClass('expandable');
           }
-          if ($('#scheduled-posts p').length) {
-            $('#scheduled-posts p').remove();
-          }
-          // Add current hour in badge on module
-          const now = new Date();
-          const time = now.toLocaleTimeString();
-          // Display module content
-          $('#scheduled-posts h3').after(response.payload.list);
-          // Display badge with current time
-          dotclear.badge($('#scheduled-posts'), {
-            id: 'dmsp',
-            value: time,
-            type: 'info',
-          });
-          // Bind every new lines for viewing scheduled post content
-          $.expandContent({
-            lines: $('#scheduled-posts li.line'),
-            callback: dotclear.dmScheduledPostsView,
-          });
-          $('#scheduled-posts ul').addClass('expandable');
+        } else {
+          console.log(dotclear.debug && response?.message ? response.message : 'Dotclear REST server error');
+          return;
         }
-      } else {
-        console.log(dotclear.debug && response?.message ? response.message : 'Dotclear REST server error');
-        return;
+      } catch (e) {
+        console.log(e);
       }
     },
     (error) => {
@@ -93,14 +101,18 @@ dotclear.dmScheduledCheck = () => {
   dotclear.services(
     'dmScheduledCheck',
     (data) => {
-      const response = JSON.parse(data);
-      if (response?.success) {
-        if (response?.payload.ret) {
-          dotclear.dmLastScheduledRows();
+      try {
+        const response = JSON.parse(data);
+        if (response?.success) {
+          if (response?.payload.ret) {
+            dotclear.dmLastScheduledRows();
+          }
+        } else {
+          console.log(dotclear.debug && response?.message ? response.message : 'Dotclear REST server error');
+          return;
         }
-      } else {
-        console.log(dotclear.debug && response?.message ? response.message : 'Dotclear REST server error');
-        return;
+      } catch (e) {
+        console.log(e);
       }
     },
     (error) => {
@@ -166,8 +178,8 @@ $(() => {
       // Icon exists on dashboard
       // First pass
       dotclear.dmScheduledPostsCount();
-      // Then fired every 60 seconds
-      dotclear.dbScheduledPostsCount_Timer = setInterval(dotclear.dmScheduledPostsCount, 60 * 1000);
+      // Then fired every 5 minutes
+      dotclear.dbScheduledPostsCount_Timer = setInterval(dotclear.dmScheduledPostsCount, 60 * 5 * 1000);
     }
   }
 });

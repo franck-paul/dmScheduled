@@ -22,9 +22,9 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 // Admin mode
 
-$__autoload['dmScheduledRest'] = __DIR__ . '/_services.php';
+Clearbricks::lib()->autoload(['dmScheduledRest' => __DIR__ . '/_services.php']);
 
 // Register REST methods
-dcCore::app()->rest->addFunction('dmScheduledPostsCount', ['dmScheduledRest', 'getScheduledPostsCount']);
-dcCore::app()->rest->addFunction('dmScheduledCheck', ['dmScheduledRest', 'checkScheduled']);
-dcCore::app()->rest->addFunction('dmLastScheduledRows', ['dmScheduledRest', 'getLastScheduledRows']);
+dcCore::app()->rest->addFunction('dmScheduledPostsCount', [dmScheduledRest::class, 'getScheduledPostsCount']);
+dcCore::app()->rest->addFunction('dmScheduledCheck', [dmScheduledRest::class, 'checkScheduled']);
+dcCore::app()->rest->addFunction('dmLastScheduledRows', [dmScheduledRest::class, 'getLastScheduledRows']);

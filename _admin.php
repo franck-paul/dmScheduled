@@ -17,14 +17,6 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 // dead but useful code, in order to have translations
 __('Scheduled Dashboard Module') . __('Display scheduled posts on dashboard');
 
-// Dashboard behaviours
-dcCore::app()->addBehavior('adminDashboardContents', ['dmScheduledBehaviors', 'adminDashboardContents']);
-dcCore::app()->addBehavior('adminDashboardHeaders', ['dmScheduledBehaviors', 'adminDashboardHeaders']);
-dcCore::app()->addBehavior('adminDashboardFavsIcon', ['dmScheduledBehaviors', 'adminDashboardFavsIcon']);
-
-dcCore::app()->addBehavior('adminAfterDashboardOptionsUpdate', ['dmScheduledBehaviors', 'adminAfterDashboardOptionsUpdate']);
-dcCore::app()->addBehavior('adminDashboardOptionsForm', ['dmScheduledBehaviors', 'adminDashboardOptionsForm']);
-
 # BEHAVIORS
 class dmScheduledBehaviors
 {
@@ -32,7 +24,7 @@ class dmScheduledBehaviors
     {
         // Get last $nb scheduled posts
         $params = [
-            'post_status' => -1,
+            'post_status' => dcBlog::POST_SCHEDULED,
             'order'       => 'post_dt ASC',
         ];
         if ((int) $nb > 0) {
@@ -55,7 +47,7 @@ class dmScheduledBehaviors
                 $ret .= '</li>';
             }
             $ret .= '</ul>';
-            $ret .= '<p><a href="posts.php?status=-1">' . __('See all scheduled posts') . '</a></p>';
+            $ret .= '<p><a href="posts.php?status=' . dcBlog::POST_SCHEDULED . '">' . __('See all scheduled posts') . '</a></p>';
 
             return $ret;
         }
@@ -63,24 +55,24 @@ class dmScheduledBehaviors
         return '<p>' . __('No scheduled post') . '</p>';
     }
 
-    private static function countScheduledPosts($core)
+    private static function countScheduledPosts()
     {
-        $count = dcCore::app()->blog->getPosts(['post_status' => -1], true)->f(0);
+        $count = dcCore::app()->blog->getPosts(['post_status' => dcBlog::POST_SCHEDULED], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count);
 
-            return '</span></a> <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
+            return '</span></a> <a href="posts.php?status=' . dcBlog::POST_SCHEDULED . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         }
 
         return '';
     }
 
-    public static function adminDashboardFavsIcon($core, $name, $icon)
+    public static function adminDashboardFavsIcon($name, $icon)
     {
         dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
         if (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_count && $name == 'posts') {
             // Hack posts title if there is at least one scheduled post
-            $str = dmScheduledBehaviors::countScheduledPosts(dcCore::app());
+            $str = dmScheduledBehaviors::countScheduledPosts();
             if ($str != '') {
                 $icon[0] .= $str;
             }
@@ -100,7 +92,7 @@ class dmScheduledBehaviors
         dcPage::cssModuleLoad('dmScheduled/css/style.css', 'screen', dcCore::app()->getVersion('dmScheduled'));
     }
 
-    public static function adminDashboardContents($core, $contents)
+    public static function adminDashboardContents($contents)
     {
         // Add large modules to the contents stack
         dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
@@ -118,7 +110,7 @@ class dmScheduledBehaviors
         }
     }
 
-    public static function adminAfterDashboardOptionsUpdate($userID)
+    public static function adminAfterDashboardOptionsUpdate()
     {
         // Get and store user's prefs for plugin options
         dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
@@ -135,7 +127,7 @@ class dmScheduledBehaviors
         }
     }
 
-    public static function adminDashboardOptionsForm($core)
+    public static function adminDashboardOptionsForm()
     {
         // Add fieldset for plugin options
         dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
@@ -165,3 +157,11 @@ class dmScheduledBehaviors
             '</div>';
     }
 }
+
+// Dashboard behaviours
+dcCore::app()->addBehavior('adminDashboardContentsV2', [dmScheduledBehaviors::class, 'adminDashboardContents']);
+dcCore::app()->addBehavior('adminDashboardHeaders', [dmScheduledBehaviors::class, 'adminDashboardHeaders']);
+dcCore::app()->addBehavior('adminDashboardFavsIconV2', [dmScheduledBehaviors::class, 'adminDashboardFavsIcon']);
+
+dcCore::app()->addBehavior('adminAfterDashboardOptionsUpdate', [dmScheduledBehaviors::class, 'adminAfterDashboardOptionsUpdate']);
+dcCore::app()->addBehavior('adminDashboardOptionsFormV2', [dmScheduledBehaviors::class, 'adminDashboardOptionsForm']);

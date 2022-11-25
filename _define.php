@@ -15,20 +15,22 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    'Scheduled Dashboard Module',           // Name
-    'Display scheduled posts on dashboard', // Description
-    'Franck Paul',                          // Author
-    '0.8',
+    'Scheduled Dashboard Module',
+    'Display scheduled posts on dashboard',
+    'Franck Paul',
+    '0.9',
     [
-        'requires'    => [['core', '2.23']],
-        'permissions' => 'admin',                                      // Permissions
-        'type'        => 'plugin',                                     // Type
-        'settings'    => [                                             // Settings
+        'requires'    => [['core', '2.24']],
+        'permissions' => dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_ADMIN,
+        ]),
+        'type'     => 'plugin',
+        'settings' => [
             'pref' => '#user-favorites.dmscheduled',
         ],
 
-        'details'    => 'https://open-time.net/?q=dmScheduled',       // Details URL
-        'support'    => 'https://github.com/franck-paul/dmScheduled', // Support URL
+        'details'    => 'https://open-time.net/?q=dmScheduled',
+        'support'    => 'https://github.com/franck-paul/dmScheduled',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/master/dcstore.xml',
     ]
 );

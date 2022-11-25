@@ -19,13 +19,11 @@ class dmScheduledRest
     /**
      * Gets the scheduled posts count.
      *
-     * @param      array   $get    The get
-     *
-     * @return     xmlTag  The scheduled posts count.
+     * @return     array   The payload.
      */
-    public static function getScheduledPostsCount($get)
+    public static function getScheduledPostsCount(): array
     {
-        $count = dcCore::app()->blog->getPosts(['post_status' => -1], true)->f(0);
+        $count = dcCore::app()->blog->getPosts(['post_status' => dcBlog::POST_SCHEDULED], true)->f(0);
 
         return [
             'ret'   => true,
@@ -36,11 +34,9 @@ class dmScheduledRest
     /**
      * Serve method to check if some entries need to be published.
      *
-     * @param      array   $get    The get
-     *
-     * @return     xmlTag  The xml tag.
+     * @return     array   The payload.
      */
-    public static function checkScheduled($get)
+    public static function checkScheduled(): array
     {
         dcCore::app()->blog->publishScheduledEntries();
 
@@ -52,11 +48,9 @@ class dmScheduledRest
     /**
      * Gets the last scheduled rows.
      *
-     * @param      array   $get    The get
-     *
-     * @return     xmlTag  The last scheduled rows.
+     * @return     array   The payload.
      */
-    public static function getLastScheduledRows($get)
+    public static function getLastScheduledRows(): array
     {
         dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
         $list = dmScheduledBehaviors::getScheduledPosts(
