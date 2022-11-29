@@ -18,7 +18,7 @@ $this->registerModule(
     'Scheduled Dashboard Module',
     'Display scheduled posts on dashboard',
     'Franck Paul',
-    '0.9',
+    '1.0',
     [
         'requires'    => [['core', '2.24']],
         'permissions' => dcCore::app()->auth->makePermissions([
