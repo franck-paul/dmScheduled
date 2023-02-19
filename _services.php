@@ -52,7 +52,6 @@ class dmScheduledRest
      */
     public static function getLastScheduledRows(): array
     {
-        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
         $list = dmScheduledBehaviors::getScheduledPosts(
             dcCore::app(),
             dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_nb,

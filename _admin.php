@@ -37,12 +37,14 @@ class dmScheduledBehaviors
                 $ret .= '<li class="line" id="dmsp' . $rs->post_id . '">';
                 $ret .= '<a href="post.php?id=' . $rs->post_id . '">' . $rs->post_title . '</a>';
                 if ($large) {
+                    $dt = '<time datetime="' . dt::iso8601(strtotime($rs->post_dt), dcCore::app()->auth->getInfo('user_tz')) . '">%s</time>';
                     $ret .= ' (' .
-                    __('by') . ' ' . $rs->user_id . ' ' . __('on') . ' ' .
-                    dt::dt2str(dcCore::app()->blog->settings->system->date_format, $rs->post_dt) . ' ' .
-                    dt::dt2str(dcCore::app()->blog->settings->system->time_format, $rs->post_dt) . ')';
+                    __('by') . ' ' . $rs->user_id . ' ' . sprintf($dt, __('on') . ' ' .
+                        dt::dt2str(dcCore::app()->blog->settings->system->date_format, $rs->post_dt) . ' ' .
+                        dt::dt2str(dcCore::app()->blog->settings->system->time_format, $rs->post_dt)) .
+                    ')';
                 } else {
-                    $ret .= ' (' . dt::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt) . ')';
+                    $ret .= ' (<time datetime="' . dt::iso8601(strtotime($rs->post_dt)) . '">' . dt::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt) . '</time>)';
                 }
                 $ret .= '</li>';
             }
@@ -69,7 +71,6 @@ class dmScheduledBehaviors
 
     public static function adminDashboardFavsIcon($name, $icon)
     {
-        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
         if (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_count && $name == 'posts') {
             // Hack posts title if there is at least one scheduled post
             $str = dmScheduledBehaviors::countScheduledPosts();
@@ -81,8 +82,6 @@ class dmScheduledBehaviors
 
     public static function adminDashboardHeaders()
     {
-        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
-
         return
         dcPage::jsJson('dm_scheduled', [
             'dmScheduled_Monitor' => dcCore::app()->auth->user_prefs->dmscheduled->scheduled_monitor,
@@ -95,7 +94,6 @@ class dmScheduledBehaviors
     public static function adminDashboardContents($contents)
     {
         // Add large modules to the contents stack
-        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
         if (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts) {
             $class = (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_large ? 'medium' : 'small');
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
@@ -113,8 +111,6 @@ class dmScheduledBehaviors
     public static function adminAfterDashboardOptionsUpdate()
     {
         // Get and store user's prefs for plugin options
-        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
-
         try {
             // Scheduled posts
             dcCore::app()->auth->user_prefs->dmscheduled->put('scheduled_posts', !empty($_POST['dmscheduled_posts']), 'boolean');
@@ -130,7 +126,6 @@ class dmScheduledBehaviors
     public static function adminDashboardOptionsForm()
     {
         // Add fieldset for plugin options
-        dcCore::app()->auth->user_prefs->addWorkspace('dmscheduled');
 
         echo '<div class="fieldset" id="dmscheduled"><h4>' . __('Scheduled posts on dashboard') . '</h4>' .
 
@@ -159,9 +154,11 @@ class dmScheduledBehaviors
 }
 
 // Dashboard behaviours
-dcCore::app()->addBehavior('adminDashboardContentsV2', [dmScheduledBehaviors::class, 'adminDashboardContents']);
-dcCore::app()->addBehavior('adminDashboardHeaders', [dmScheduledBehaviors::class, 'adminDashboardHeaders']);
-dcCore::app()->addBehavior('adminDashboardFavsIconV2', [dmScheduledBehaviors::class, 'adminDashboardFavsIcon']);
+dcCore::app()->addBehaviors([
+    'adminDashboardContentsV2'         => [dmScheduledBehaviors::class, 'adminDashboardContents'],
+    'adminDashboardHeaders'            => [dmScheduledBehaviors::class, 'adminDashboardHeaders'],
+    'adminDashboardFavsIconV2'         => [dmScheduledBehaviors::class, 'adminDashboardFavsIcon'],
 
-dcCore::app()->addBehavior('adminAfterDashboardOptionsUpdate', [dmScheduledBehaviors::class, 'adminAfterDashboardOptionsUpdate']);
-dcCore::app()->addBehavior('adminDashboardOptionsFormV2', [dmScheduledBehaviors::class, 'adminDashboardOptionsForm']);
+    'adminAfterDashboardOptionsUpdate' => [dmScheduledBehaviors::class, 'adminAfterDashboardOptionsUpdate'],
+    'adminDashboardOptionsFormV2'      => [dmScheduledBehaviors::class, 'adminDashboardOptionsForm'],
+]);

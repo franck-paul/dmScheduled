@@ -71,7 +71,7 @@ dotclear.dmLastScheduledRows = () => {
             // Display badge with current time
             dotclear.badge($('#scheduled-posts'), {
               id: 'dmsp',
-              value: time,
+              value: `<time datetime="${now.toISOString()}">${time}</time>`,
               type: 'info',
             });
             // Bind every new lines for viewing scheduled post content
