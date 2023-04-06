@@ -11,6 +11,8 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use Dotclear\Helper\Clearbricks;
+
 // Public and Admin mode
 
 if (!defined('DC_CONTEXT_ADMIN')) {

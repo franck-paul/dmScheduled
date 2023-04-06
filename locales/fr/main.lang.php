@@ -13,8 +13,10 @@ l10n::$locales['Display scheduled posts on dashboard'] = 'Affiche les billets pr
 l10n::$locales['Scheduled Dashboard Module'] = 'Module d\'affichage des billets programmés';
 l10n::$locales['See all scheduled posts'] = 'Voir tous les billets programmés';
 l10n::$locales['No scheduled post'] = 'Aucun billet programmé';
-l10n::$locales['(%d scheduled post)'][0] = '(dont %d programmé)';
-l10n::$locales['(%d scheduled post)'][1] = '(dont %d programmés)';
+l10n::$locales['(%d scheduled post)'] = [
+	'(dont %d programmé)',
+	'(dont %d programmés)',
+];
 l10n::$locales['Scheduled posts'] = 'Billets programmés';
 l10n::$locales['Scheduled posts on dashboard'] = 'Billets programmés sur le tableau de bord';
 l10n::$locales['Display count of scheduled posts on posts dashboard icon'] = 'Afficher le nombre de billets programmés sur le favori des billets du tableau de bord';

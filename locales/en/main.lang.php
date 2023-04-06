@@ -13,8 +13,10 @@ l10n::$locales['Display scheduled posts on dashboard'] = '';
 l10n::$locales['Scheduled Dashboard Module'] = '';
 l10n::$locales['See all scheduled posts'] = '';
 l10n::$locales['No scheduled post'] = '';
-l10n::$locales['(%d scheduled post)'][0] = '';
-l10n::$locales['(%d scheduled post)'][1] = '';
+l10n::$locales['(%d scheduled post)'] = [
+	'',
+	'',
+];
 l10n::$locales['Scheduled posts'] = '';
 l10n::$locales['Scheduled posts on dashboard'] = '';
 l10n::$locales['Display count of scheduled posts on posts dashboard icon'] = '';
