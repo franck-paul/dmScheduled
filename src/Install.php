@@ -37,7 +37,7 @@ class Install extends dcNsProcess
         try {
             // Update
             $old_version = dcCore::app()->getVersion(My::id());
-            if (version_compare((string) $old_version, '3.0', '<')) {
+            if (version_compare((string) $old_version, '2.0', '<')) {
                 // Rename settings workspace
                 if (dcCore::app()->auth->user_prefs->exists('dmscheduled')) {
                     dcCore::app()->auth->user_prefs->delWorkspace(My::id());
