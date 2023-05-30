@@ -10,11 +10,14 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_CONTEXT_ADMIN')) {
-    return;
-}
+declare(strict_types=1);
 
-class dmScheduledRest
+namespace Dotclear\Plugin\dmScheduled;
+
+use dcBlog;
+use dcCore;
+
+class BackendRest
 {
     /**
      * Gets the scheduled posts count.
@@ -52,10 +55,11 @@ class dmScheduledRest
      */
     public static function getLastScheduledRows(): array
     {
-        $list = dmScheduledBehaviors::getScheduledPosts(
+        $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+        $list        = BackendBehaviors::getScheduledPosts(
             dcCore::app(),
-            dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_nb,
-            dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_large
+            $preferences->posts_nb,
+            $preferences->posts_large
         );
 
         return [

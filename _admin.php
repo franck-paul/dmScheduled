@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\Date;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
@@ -37,14 +40,14 @@ class dmScheduledBehaviors
                 $ret .= '<li class="line" id="dmsp' . $rs->post_id . '">';
                 $ret .= '<a href="post.php?id=' . $rs->post_id . '">' . $rs->post_title . '</a>';
                 if ($large) {
-                    $dt = '<time datetime="' . dt::iso8601(strtotime($rs->post_dt), dcCore::app()->auth->getInfo('user_tz')) . '">%s</time>';
+                    $dt = '<time datetime="' . Date::iso8601(strtotime($rs->post_dt), dcCore::app()->auth->getInfo('user_tz')) . '">%s</time>';
                     $ret .= ' (' .
                     __('by') . ' ' . $rs->user_id . ' ' . sprintf($dt, __('on') . ' ' .
-                        dt::dt2str(dcCore::app()->blog->settings->system->date_format, $rs->post_dt) . ' ' .
-                        dt::dt2str(dcCore::app()->blog->settings->system->time_format, $rs->post_dt)) .
+                        Date::dt2str(dcCore::app()->blog->settings->system->date_format, $rs->post_dt) . ' ' .
+                        Date::dt2str(dcCore::app()->blog->settings->system->time_format, $rs->post_dt)) .
                     ')';
                 } else {
-                    $ret .= ' (<time datetime="' . dt::iso8601(strtotime($rs->post_dt)) . '">' . dt::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt) . '</time>)';
+                    $ret .= ' (<time datetime="' . Date::iso8601(strtotime($rs->post_dt)) . '">' . Date::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt) . '</time>)';
                 }
                 $ret .= '</li>';
             }
@@ -155,9 +158,9 @@ class dmScheduledBehaviors
 
 // Dashboard behaviours
 dcCore::app()->addBehaviors([
-    'adminDashboardContentsV2'         => [dmScheduledBehaviors::class, 'adminDashboardContents'],
-    'adminDashboardHeaders'            => [dmScheduledBehaviors::class, 'adminDashboardHeaders'],
-    'adminDashboardFavsIconV2'         => [dmScheduledBehaviors::class, 'adminDashboardFavsIcon'],
+    'adminDashboardContentsV2' => [dmScheduledBehaviors::class, 'adminDashboardContents'],
+    'adminDashboardHeaders'    => [dmScheduledBehaviors::class, 'adminDashboardHeaders'],
+    'adminDashboardFavsIconV2' => [dmScheduledBehaviors::class, 'adminDashboardFavsIcon'],
 
     'adminAfterDashboardOptionsUpdate' => [dmScheduledBehaviors::class, 'adminAfterDashboardOptionsUpdate'],
     'adminDashboardOptionsFormV2'      => [dmScheduledBehaviors::class, 'adminDashboardOptionsForm'],

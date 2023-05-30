@@ -9,18 +9,20 @@
 # DOT NOT MODIFY THIS FILE !
 #
 
-l10n::$locales['Display scheduled posts on dashboard'] = '';
-l10n::$locales['Scheduled Dashboard Module'] = '';
-l10n::$locales['See all scheduled posts'] = '';
-l10n::$locales['No scheduled post'] = '';
-l10n::$locales['(%d scheduled post)'] = [
+use Dotclear\Helper\L10n;
+
+L10n::$locales['Display scheduled posts on dashboard'] = '';
+L10n::$locales['Scheduled Dashboard Module'] = '';
+L10n::$locales['See all scheduled posts'] = '';
+L10n::$locales['No scheduled post'] = '';
+L10n::$locales['(%d scheduled post)'] = [
 	'',
 	'',
 ];
-l10n::$locales['Scheduled posts'] = '';
-l10n::$locales['Scheduled posts on dashboard'] = '';
-l10n::$locales['Display count of scheduled posts on posts dashboard icon'] = '';
-l10n::$locales['Display scheduled posts'] = '';
-l10n::$locales['Number of scheduled posts to display:'] = '';
-l10n::$locales['Small screen'] = '';
-l10n::$locales['Monitor'] = '';
+L10n::$locales['Scheduled posts'] = '';
+L10n::$locales['Scheduled posts on dashboard'] = '';
+L10n::$locales['Display count of scheduled posts on posts dashboard icon'] = '';
+L10n::$locales['Display scheduled posts'] = '';
+L10n::$locales['Number of scheduled posts to display:'] = '';
+L10n::$locales['Small screen'] = '';
+L10n::$locales['Monitor'] = '';
