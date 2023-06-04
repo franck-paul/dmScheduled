@@ -30,7 +30,7 @@ class BackendRest
 
         return [
             'ret'   => true,
-            'count' => $count ? sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count) : '',
+            'count' => $count ? sprintf(__('(%d scheduled post)', '(%d scheduled posts)', (int) $count), $count) : '',
         ];
     }
 
