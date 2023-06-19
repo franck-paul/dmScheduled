@@ -175,7 +175,7 @@ $(() => {
     dotclear.dmScheduled_Timer = setInterval(dotclear.dmScheduledCheck, 60 * 5 * 1000);
   }
   if (dotclear.dmScheduled_Counter) {
-    const icon = $('#dashboard-main #icons p a[href="posts.php"]');
+    let icon = $('#dashboard-main #icons p a[href="posts.php"]');
     if (!icon.length) {
       icon = $('#dashboard-main #icons p #icon-process-posts-fav');
     }
