@@ -1,7 +1,7 @@
 /*global $, dotclear */
 'use strict';
 
-dotclear.dmScheduledPostsCount = () => {
+dotclear.dmScheduledPostsCount = (icon) => {
   dotclear.services(
     'dmScheduledPostsCount',
     (data) => {
@@ -12,19 +12,21 @@ dotclear.dmScheduledPostsCount = () => {
             // Replace current counters
             const nb = response.payload.count;
             if (nb !== undefined && nb != dotclear.dbScheduledPostsCount_Counter) {
+              const href = icon.attr('href');
+              const param = `${href.includes('?') ? '&' : '?'}status=-1`;
+              const url = `${href}${param}`;
               // First pass or counter changed
-              let icon = $('#dashboard-main #icons p a[href="posts.php?status=-1"]');
-              if (icon.length) {
+              let link = $(`#dashboard-main #icons p a[href="${url}"]`);
+              if (link.length) {
                 // Update count if exists
-                const nb_label = icon.children('span.db-icon-title-dm-scheduled');
+                const nb_label = link.children('span.db-icon-title-dm-scheduled');
                 if (nb_label.length) {
                   nb_label.text(nb);
                 }
               } else if (nb != '') {
                 // Add full element (link + counter)
-                icon = $('#dashboard-main #icons p a[href="posts.php"]');
                 if (icon.length) {
-                  const xml = ` <a href="posts.php?status=-1"><span class="db-icon-title-dm-scheduled">${nb}</span></a>`;
+                  const xml = ` <a href="${url}"><span class="db-icon-title-dm-scheduled">${nb}</span></a>`;
                   icon.after(xml);
                 }
               }
@@ -174,12 +176,15 @@ $(() => {
   }
   if (dotclear.dmScheduled_Counter) {
     const icon = $('#dashboard-main #icons p a[href="posts.php"]');
+    if (!icon.length) {
+      icon = $('#dashboard-main #icons p #icon-process-posts-fav');
+    }
     if (icon.length) {
       // Icon exists on dashboard
       // First pass
-      dotclear.dmScheduledPostsCount();
+      dotclear.dmScheduledPostsCount(icon);
       // Then fired every 5 minutes
-      dotclear.dbScheduledPostsCount_Timer = setInterval(dotclear.dmScheduledPostsCount, 60 * 5 * 1000);
+      dotclear.dbScheduledPostsCount_Timer = setInterval(dotclear.dmScheduledPostsCount, 60 * 5 * 1000, icon);
     }
   }
 });
