@@ -25,10 +25,8 @@ dotclear.dmScheduledPostsCount = (icon) => {
                 }
               } else if (nb != '') {
                 // Add full element (link + counter)
-                if (icon.length) {
-                  const xml = ` <a href="${url}"><span class="db-icon-title-dm-scheduled">${nb}</span></a>`;
-                  icon.after(xml);
-                }
+                const xml = ` <a href="${url}"><span class="db-icon-title-dm-scheduled">${nb}</span></a>`;
+                icon.after(xml);
               }
               // Store current counter
               dotclear.dbScheduledPostsCount_Counter = nb;
