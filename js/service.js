@@ -16,7 +16,7 @@ dotclear.dmScheduledPostsCount = (icon) => {
               const param = `${href.includes('?') ? '&' : '?'}status=-1`;
               const url = `${href}${param}`;
               // First pass or counter changed
-              let link = $(`#dashboard-main #icons p a[href="${url}"]`);
+              const link = $(`#dashboard-main #icons p a[href="${url}"]`);
               if (link.length) {
                 // Update count if exists
                 const nb_label = link.children('span.db-icon-title-dm-scheduled');
@@ -147,9 +147,9 @@ dotclear.dmScheduledPostsView = (line, action = 'toggle', e = null) => {
           $(li).append(content);
           $(line).addClass('expand');
           line.parentNode.insertBefore(li, line.nextSibling);
-        } else {
-          $(line).toggleClass('expand');
+          return;
         }
+        $(line).toggleClass('expand');
       },
       {
         clean: e.metaKey,
@@ -172,17 +172,18 @@ $(() => {
     // Auto refresh requested : Set 5 minutes interval between two checks for publishing scheduled entries
     dotclear.dmScheduled_Timer = setInterval(dotclear.dmScheduledCheck, 60 * 5 * 1000);
   }
-  if (dotclear.dmScheduled_Counter) {
-    let icon = $('#dashboard-main #icons p a[href="posts.php"]');
-    if (!icon.length) {
-      icon = $('#dashboard-main #icons p #icon-process-posts-fav');
-    }
-    if (icon.length) {
-      // Icon exists on dashboard
-      // First pass
-      dotclear.dmScheduledPostsCount(icon);
-      // Then fired every 5 minutes
-      dotclear.dbScheduledPostsCount_Timer = setInterval(dotclear.dmScheduledPostsCount, 60 * 5 * 1000, icon);
-    }
+  if (!dotclear.dmScheduled_Counter) {
+    return;
+  }
+  let icon = $('#dashboard-main #icons p a[href="posts.php"]');
+  if (!icon.length) {
+    icon = $('#dashboard-main #icons p #icon-process-posts-fav');
+  }
+  if (icon.length) {
+    // Icon exists on dashboard
+    // First pass
+    dotclear.dmScheduledPostsCount(icon);
+    // Then fired every 5 minutes
+    dotclear.dbScheduledPostsCount_Timer = setInterval(dotclear.dmScheduledPostsCount, 60 * 5 * 1000, icon);
   }
 });
