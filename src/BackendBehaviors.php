@@ -112,7 +112,7 @@ class BackendBehaviors
         if ($preferences->active) {
             $class = ($preferences->posts_large ? 'medium' : 'small');
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
-            '<h3>' . '<img src="' . urldecode(dcPage::getPF(My::id() . '/icon.png')) . '" alt="" />' . ' ' . __('Scheduled posts') . '</h3>';
+            '<h3>' . '<img src="' . urldecode(dcPage::getPF(My::id() . '/icon.svg')) . '" alt="" class="icon-small" />' . ' ' . __('Scheduled posts') . '</h3>';
             $ret .= self::getScheduledPosts(
                 dcCore::app(),
                 $preferences->posts_nb,
