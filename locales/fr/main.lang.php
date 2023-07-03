@@ -27,3 +27,4 @@ L10n::$locales['Display scheduled posts'] = 'Afficher les billets programmés';
 L10n::$locales['Number of scheduled posts to display:'] = 'Nombre de billets programmés à afficher :';
 L10n::$locales['Small screen'] = 'Affichage abrégé';
 L10n::$locales['Monitor'] = 'Contrôler régulièrement si des billets doivent être publiés';
+L10n::$locales['Interval in seconds between two refreshes:'] = 'Intervalle en secondes entre deux rafraichissements :';

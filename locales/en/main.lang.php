@@ -26,3 +26,4 @@ L10n::$locales['Display scheduled posts'] = '';
 L10n::$locales['Number of scheduled posts to display:'] = '';
 L10n::$locales['Small screen'] = '';
 L10n::$locales['Monitor'] = '';
+L10n::$locales['Interval in seconds between two refreshes:'] = '';
