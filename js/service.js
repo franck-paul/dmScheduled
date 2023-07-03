@@ -170,7 +170,7 @@ $(() => {
     // First pass
     dotclear.dmScheduledCheck();
     // Auto refresh requested : Set interval between two checks for publishing scheduled entries
-    dotclear.dmScheduled_Timer = setInterval(dotclear.dmScheduledCheck, (dotclear.dmHostingMonitor_Interval || 300) * 1000);
+    dotclear.dmScheduled_Timer = setInterval(dotclear.dmScheduledCheck, (dotclear.dbScheduledPostsCount_Timer || 300) * 1000);
   }
   if (!dotclear.dmScheduled_Counter) {
     return;
