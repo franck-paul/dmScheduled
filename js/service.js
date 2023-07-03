@@ -169,7 +169,7 @@ $(() => {
   if (dotclear.dmScheduled_Monitor) {
     // First pass
     dotclear.dmScheduledCheck();
-    // Auto refresh requested : Set 5 minutes interval between two checks for publishing scheduled entries
+    // Auto refresh requested : Set interval between two checks for publishing scheduled entries
     dotclear.dmScheduled_Timer = setInterval(dotclear.dmScheduledCheck, (dotclear.dmHostingMonitor_Interval || 300) * 1000);
   }
   if (!dotclear.dmScheduled_Counter) {
@@ -183,7 +183,7 @@ $(() => {
     // Icon exists on dashboard
     // First pass
     dotclear.dmScheduledPostsCount(icon);
-    // Then fired every 5 minutes
+    // Then fired every x minutes
     dotclear.dbScheduledPostsCount_Timer = setInterval(
       dotclear.dmScheduledPostsCount,
       (dotclear.dmScheduled_Interval || 300) * 1000,
