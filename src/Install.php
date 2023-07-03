@@ -65,7 +65,7 @@ class Install extends dcNsProcess
             $preferences->put('posts_nb', 5, dcWorkspace::WS_INT, 'Number of scheduled posts displayed', false, true);
             $preferences->put('posts_large', true, dcWorkspace::WS_BOOL, 'Large display', false, true);
             $preferences->put('monitor', false, dcWorkspace::WS_BOOL, 'Monitor', false, true);
-            $preferences->put('interval', 300, 'integer', 'Interval between two refreshes', false, true);
+            $preferences->put('interval', 300, dcWorkspace::WS_INT, 'Interval between two refreshes', false, true);
         } catch (Exception $e) {
             dcCore::app()->error->add($e->getMessage());
         }
