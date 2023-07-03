@@ -97,8 +97,9 @@ class BackendBehaviors
 
         return
         dcPage::jsJson('dm_scheduled', [
-            'dmScheduled_Monitor' => $preferences->monitor,
-            'dmScheduled_Counter' => $preferences->posts_count,
+            'dmScheduled_Monitor'  => $preferences->monitor,
+            'dmScheduled_Counter'  => $preferences->posts_count,
+            'dmScheduled_Interval' => ($preferences->interval ?? 300),
         ]) .
         dcPage::jsModuleLoad(My::id() . '/js/service.js', dcCore::app()->getVersion(My::id())) .
         dcPage::cssModuleLoad(My::id() . '/css/style.css', 'screen', dcCore::app()->getVersion(My::id()));
@@ -135,6 +136,7 @@ class BackendBehaviors
             $preferences->put('posts_large', empty($_POST['dmscheduled_posts_small']), dcWorkspace::WS_BOOL);
             $preferences->put('posts_count', !empty($_POST['dmscheduled_posts_count']), dcWorkspace::WS_BOOL);
             $preferences->put('monitor', !empty($_POST['dmscheduled_monitor']), dcWorkspace::WS_BOOL);
+            $preferences->put('interval', (int) $_POST['dmscheduled_interval'], dcWorkspace::WS_INT);
         } catch (Exception $e) {
             dcCore::app()->error->add($e->getMessage());
         }
@@ -172,6 +174,10 @@ class BackendBehaviors
                 (new Checkbox('dmscheduled_monitor', $preferences->monitor))
                     ->value(1)
                     ->label((new Label(__('Monitor'), Label::INSIDE_TEXT_AFTER))),
+            ]),
+            (new Para())->items([
+                (new Number('dmscheduled_interval', 0, 9_999_999, $preferences->interval))
+                    ->label((new Label(__('Interval in seconds between two refreshes:'), Label::INSIDE_TEXT_BEFORE))),
             ]),
         ])
         ->render();
