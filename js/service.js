@@ -186,7 +186,7 @@ $(() => {
     // Then fired every 5 minutes
     dotclear.dbScheduledPostsCount_Timer = setInterval(
       dotclear.dmScheduledPostsCount,
-      (dotclear.dmHostingMonitor_Interval || 300) * 1000,
+      (dotclear.dmScheduled_Interval || 300) * 1000,
       icon,
     );
   }
