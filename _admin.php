@@ -100,7 +100,7 @@ class dmScheduledBehaviors
         if (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts) {
             $class = (dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_large ? 'medium' : 'small');
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
-            '<h3>' . '<img src="' . urldecode(dcPage::getPF('dmScheduled/icon.png')) . '" alt="" />' . ' ' . __('Scheduled posts') . '</h3>';
+            '<h3>' . '<img src="' . urldecode(dcPage::getPF('dmScheduled/icon.svg')) . '" alt="" />' . ' ' . __('Scheduled posts') . '</h3>';
             $ret .= dmScheduledBehaviors::getScheduledPosts(
                 dcCore::app(),
                 dcCore::app()->auth->user_prefs->dmscheduled->scheduled_posts_nb,
