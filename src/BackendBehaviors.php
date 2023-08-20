@@ -17,8 +17,8 @@ namespace Dotclear\Plugin\dmScheduled;
 use ArrayObject;
 use dcBlog;
 use dcCore;
-use dcPage;
 use dcWorkspace;
+use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Fieldset;
@@ -45,7 +45,7 @@ class BackendBehaviors
             $ret = '<ul>';
             while ($rs->fetch()) {
                 $ret .= '<li class="line" id="dmsp' . $rs->post_id . '">';
-                $ret .= '<a href="' . dcCore::app()->adminurl->get('admin.post', ['id' => $rs->post_id]) . '">' . $rs->post_title . '</a>';
+                $ret .= '<a href="' . dcCore::app()->admin->url->get('admin.post', ['id' => $rs->post_id]) . '">' . $rs->post_title . '</a>';
                 if ($large) {
                     $dt = '<time datetime="' . Date::iso8601(strtotime($rs->post_dt), dcCore::app()->auth->getInfo('user_tz')) . '">%s</time>';
                     $ret .= ' (' .
@@ -59,7 +59,7 @@ class BackendBehaviors
                 $ret .= '</li>';
             }
             $ret .= '</ul>';
-            $ret .= '<p><a href="' . dcCore::app()->adminurl->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
+            $ret .= '<p><a href="' . dcCore::app()->admin->url->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
 
             return $ret;
         }
@@ -73,7 +73,7 @@ class BackendBehaviors
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', (int) $count), (int) $count);
 
-            return '</span></a> <a href="' . dcCore::app()->adminurl->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
+            return '</span></a> <a href="' . dcCore::app()->admin->url->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         }
 
         return '';
@@ -96,13 +96,13 @@ class BackendBehaviors
         $preferences = dcCore::app()->auth->user_prefs->get(My::id());
 
         return
-        dcPage::jsJson('dm_scheduled', [
+        Page::jsJson('dm_scheduled', [
             'dmScheduled_Monitor'  => $preferences->monitor,
             'dmScheduled_Counter'  => $preferences->posts_count,
             'dmScheduled_Interval' => ($preferences->interval ?? 300),
         ]) .
-        dcPage::jsModuleLoad(My::id() . '/js/service.js', dcCore::app()->getVersion(My::id())) .
-        dcPage::cssModuleLoad(My::id() . '/css/style.css', 'screen', dcCore::app()->getVersion(My::id()));
+        My::jsLoad('service.js') .
+        My::cssLoad('style.css');
     }
 
     public static function adminDashboardContents($contents)
@@ -113,7 +113,7 @@ class BackendBehaviors
         if ($preferences->active) {
             $class = ($preferences->posts_large ? 'medium' : 'small');
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
-            '<h3>' . '<img src="' . urldecode(dcPage::getPF(My::id() . '/icon.svg')) . '" alt="" class="icon-small" />' . ' ' . __('Scheduled posts') . '</h3>';
+            '<h3>' . '<img src="' . urldecode(Page::getPF(My::id() . '/icon.svg')) . '" alt="" class="icon-small" />' . ' ' . __('Scheduled posts') . '</h3>';
             $ret .= self::getScheduledPosts(
                 dcCore::app(),
                 $preferences->posts_nb,
