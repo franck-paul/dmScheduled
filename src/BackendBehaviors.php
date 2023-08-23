@@ -81,7 +81,7 @@ class BackendBehaviors
 
     public static function adminDashboardFavsIcon($name, $icon)
     {
-        $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+        $preferences = My::prefs();
         if ($preferences->posts_count && $name == 'posts') {
             // Hack posts title if there is at least one scheduled post
             $str = self::countScheduledPosts();
@@ -93,7 +93,7 @@ class BackendBehaviors
 
     public static function adminDashboardHeaders()
     {
-        $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+        $preferences = My::prefs();
 
         return
         Page::jsJson('dm_scheduled', [
@@ -107,7 +107,7 @@ class BackendBehaviors
 
     public static function adminDashboardContents($contents)
     {
-        $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+        $preferences = My::prefs();
 
         // Add large modules to the contents stack
         if ($preferences->active) {
@@ -129,7 +129,7 @@ class BackendBehaviors
         // Get and store user's prefs for plugin options
         try {
             // Scheduled posts
-            $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+            $preferences = My::prefs();
 
             $preferences->put('active', !empty($_POST['dmscheduled_active']), dcWorkspace::WS_BOOL);
             $preferences->put('posts_nb', (int) $_POST['dmscheduled_posts_nb'], dcWorkspace::WS_INT);
@@ -144,7 +144,7 @@ class BackendBehaviors
 
     public static function adminDashboardOptionsForm()
     {
-        $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+        $preferences = My::prefs();
 
         // Add fieldset for plugin options
         echo

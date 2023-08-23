@@ -48,7 +48,7 @@ class Install extends Process
                     }
                 };
 
-                $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+                $preferences = My::prefs();
                 foreach (['posts_count', 'posts_nb', 'posts_large', 'monitor'] as $pref) {
                     $rename($pref, $preferences);
                 }
@@ -56,7 +56,7 @@ class Install extends Process
             }
 
             // Default prefs for pending posts and comments
-            $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+            $preferences = My::prefs();
             $preferences->put('active', false, dcWorkspace::WS_BOOL, 'Display scheduled posts', false, true);
             $preferences->put('posts_count', false, dcWorkspace::WS_BOOL, 'Display count of scheduled posts on posts dashboard icon', false, true);
             $preferences->put('posts_nb', 5, dcWorkspace::WS_INT, 'Number of scheduled posts displayed', false, true);

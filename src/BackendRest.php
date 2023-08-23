@@ -55,7 +55,7 @@ class BackendRest
      */
     public static function getLastScheduledRows(): array
     {
-        $preferences = dcCore::app()->auth->user_prefs->get(My::id());
+        $preferences = My::prefs();
         $list        = BackendBehaviors::getScheduledPosts(
             dcCore::app(),
             $preferences->posts_nb,
