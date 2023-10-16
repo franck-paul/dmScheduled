@@ -22,7 +22,7 @@ class BackendRest
     /**
      * Gets the scheduled posts count.
      *
-     * @return     array   The payload.
+     * @return     array<string, mixed>   The payload.
      */
     public static function getScheduledPostsCount(): array
     {
@@ -37,7 +37,7 @@ class BackendRest
     /**
      * Serve method to check if some entries need to be published.
      *
-     * @return     array   The payload.
+     * @return     array<string, mixed>   The payload.
      */
     public static function checkScheduled(): array
     {
@@ -51,13 +51,12 @@ class BackendRest
     /**
      * Gets the last scheduled rows.
      *
-     * @return     array   The payload.
+     * @return     array<string, mixed>   The payload.
      */
     public static function getLastScheduledRows(): array
     {
         $preferences = My::prefs();
         $list        = BackendBehaviors::getScheduledPosts(
-            dcCore::app(),
             $preferences->posts_nb,
             $preferences->posts_large
         );

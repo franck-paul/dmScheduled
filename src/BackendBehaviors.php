@@ -30,7 +30,7 @@ use Exception;
 
 class BackendBehaviors
 {
-    public static function getScheduledPosts($core, $nb, $large)
+    public static function getScheduledPosts(int $nb, bool $large): string
     {
         // Get last $nb scheduled posts
         $params = [
@@ -45,7 +45,7 @@ class BackendBehaviors
             $ret = '<ul>';
             while ($rs->fetch()) {
                 $ret .= '<li class="line" id="dmsp' . $rs->post_id . '">';
-                $ret .= '<a href="' . dcCore::app()->admin->url->get('admin.post', ['id' => $rs->post_id]) . '">' . $rs->post_title . '</a>';
+                $ret .= '<a href="' . dcCore::app()->adminurl->get('admin.post', ['id' => $rs->post_id]) . '">' . $rs->post_title . '</a>';
                 if ($large) {
                     $dt = '<time datetime="' . Date::iso8601(strtotime($rs->post_dt), dcCore::app()->auth->getInfo('user_tz')) . '">%s</time>';
                     $ret .= ' (' .
@@ -59,7 +59,7 @@ class BackendBehaviors
                 $ret .= '</li>';
             }
             $ret .= '</ul>';
-            $ret .= '<p><a href="' . dcCore::app()->admin->url->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
+            $ret .= '<p><a href="' . dcCore::app()->adminurl->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
 
             return $ret;
         }
@@ -67,31 +67,39 @@ class BackendBehaviors
         return '<p>' . __('No scheduled post') . '</p>';
     }
 
-    private static function countScheduledPosts()
+    private static function countScheduledPosts(): string
     {
         $count = dcCore::app()->blog->getPosts(['post_status' => dcBlog::POST_SCHEDULED], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', (int) $count), (int) $count);
 
-            return '</span></a> <a href="' . dcCore::app()->admin->url->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
+            return '</span></a> <a href="' . dcCore::app()->adminurl->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         }
 
         return '';
     }
 
-    public static function adminDashboardFavsIcon($name, $icon)
+    /**
+     * @param      string                       $name   The name
+     * @param      ArrayObject<string, mixed>   $icon   The icon
+     *
+     * @return     string
+     */
+    public static function adminDashboardFavsIcon(string $name, ArrayObject $icon): string
     {
         $preferences = My::prefs();
-        if ($preferences->posts_count && $name == 'posts') {
+        if ($preferences->posts_count && $name === 'posts') {
             // Hack posts title if there is at least one scheduled post
             $str = self::countScheduledPosts();
             if ($str != '') {
                 $icon[0] .= $str;
             }
         }
+
+        return '';
     }
 
-    public static function adminDashboardHeaders()
+    public static function adminDashboardHeaders(): string
     {
         $preferences = My::prefs();
 
@@ -105,7 +113,12 @@ class BackendBehaviors
         My::cssLoad('style.css');
     }
 
-    public static function adminDashboardContents($contents)
+    /**
+     * @param      ArrayObject<int, ArrayObject<int, string>>  $contents  The contents
+     *
+     * @return     string
+     */
+    public static function adminDashboardContents(ArrayObject $contents): string
     {
         $preferences = My::prefs();
 
@@ -115,16 +128,17 @@ class BackendBehaviors
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
             '<h3>' . '<img src="' . urldecode(Page::getPF(My::id() . '/icon.svg')) . '" alt="" class="icon-small" />' . ' ' . __('Scheduled posts') . '</h3>';
             $ret .= self::getScheduledPosts(
-                dcCore::app(),
                 $preferences->posts_nb,
                 $preferences->posts_large
             );
             $ret .= '</div>';
             $contents[] = new ArrayObject([$ret]);
         }
+
+        return '';
     }
 
-    public static function adminAfterDashboardOptionsUpdate()
+    public static function adminAfterDashboardOptionsUpdate(): string
     {
         // Get and store user's prefs for plugin options
         try {
@@ -140,9 +154,11 @@ class BackendBehaviors
         } catch (Exception $e) {
             dcCore::app()->error->add($e->getMessage());
         }
+
+        return '';
     }
 
-    public static function adminDashboardOptionsForm()
+    public static function adminDashboardOptionsForm(): string
     {
         $preferences = My::prefs();
 
@@ -181,5 +197,7 @@ class BackendBehaviors
             ]),
         ])
         ->render();
+
+        return '';
     }
 }
