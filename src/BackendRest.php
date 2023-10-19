@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\dmScheduled;
 
 use dcBlog;
-use dcCore;
+use Dotclear\App;
 
 class BackendRest
 {
@@ -26,7 +26,7 @@ class BackendRest
      */
     public static function getScheduledPostsCount(): array
     {
-        $count = dcCore::app()->blog->getPosts(['post_status' => dcBlog::POST_SCHEDULED], true)->f(0);
+        $count = App::blog()->getPosts(['post_status' => dcBlog::POST_SCHEDULED], true)->f(0);
 
         return [
             'ret'   => true,
@@ -41,7 +41,7 @@ class BackendRest
      */
     public static function checkScheduled(): array
     {
-        dcCore::app()->blog->publishScheduledEntries();
+        App::blog()->publishScheduledEntries();
 
         return [
             'ret' => true,
@@ -56,9 +56,15 @@ class BackendRest
     public static function getLastScheduledRows(): array
     {
         $preferences = My::prefs();
-        $list        = BackendBehaviors::getScheduledPosts(
-            $preferences->posts_nb,
-            $preferences->posts_large
+        if (!$preferences) {
+            return [
+                'ret' => false,
+            ];
+        }
+
+        $list = BackendBehaviors::getScheduledPosts(
+            (int) $preferences->posts_nb,
+            (bool) $preferences->posts_large
         );
 
         return [

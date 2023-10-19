@@ -49,20 +49,24 @@ class Install extends Process
                 };
 
                 $preferences = My::prefs();
-                foreach (['posts_count', 'posts_nb', 'posts_large', 'monitor'] as $pref) {
-                    $rename($pref, $preferences);
+                if ($preferences) {
+                    foreach (['posts_count', 'posts_nb', 'posts_large', 'monitor'] as $pref) {
+                        $rename($pref, $preferences);
+                    }
+                    $preferences->rename('scheduled_posts', 'active');
                 }
-                $preferences->rename('scheduled_posts', 'active');
             }
 
             // Default prefs for pending posts and comments
             $preferences = My::prefs();
-            $preferences->put('active', false, dcWorkspace::WS_BOOL, 'Display scheduled posts', false, true);
-            $preferences->put('posts_count', false, dcWorkspace::WS_BOOL, 'Display count of scheduled posts on posts dashboard icon', false, true);
-            $preferences->put('posts_nb', 5, dcWorkspace::WS_INT, 'Number of scheduled posts displayed', false, true);
-            $preferences->put('posts_large', true, dcWorkspace::WS_BOOL, 'Large display', false, true);
-            $preferences->put('monitor', false, dcWorkspace::WS_BOOL, 'Monitor', false, true);
-            $preferences->put('interval', 300, dcWorkspace::WS_INT, 'Interval between two refreshes', false, true);
+            if ($preferences) {
+                $preferences->put('active', false, dcWorkspace::WS_BOOL, 'Display scheduled posts', false, true);
+                $preferences->put('posts_count', false, dcWorkspace::WS_BOOL, 'Display count of scheduled posts on posts dashboard icon', false, true);
+                $preferences->put('posts_nb', 5, dcWorkspace::WS_INT, 'Number of scheduled posts displayed', false, true);
+                $preferences->put('posts_large', true, dcWorkspace::WS_BOOL, 'Large display', false, true);
+                $preferences->put('monitor', false, dcWorkspace::WS_BOOL, 'Monitor', false, true);
+                $preferences->put('interval', 300, dcWorkspace::WS_INT, 'Interval between two refreshes', false, true);
+            }
         } catch (Exception $e) {
             dcCore::app()->error->add($e->getMessage());
         }
