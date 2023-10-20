@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\dmScheduled;
 
-use dcCore;
-use dcWorkspace;
+use Dotclear\App;
 use Dotclear\Core\Process;
+use Dotclear\Interface\Core\UserWorkspaceInterface;
 use Exception;
 
 class Install extends Process
@@ -34,15 +34,15 @@ class Install extends Process
 
         try {
             // Update
-            $old_version = dcCore::app()->getVersion(My::id());
+            $old_version = App::version()->getVersion(My::id());
             if (version_compare((string) $old_version, '2.0', '<')) {
                 // Rename settings workspace
-                if (dcCore::app()->auth->user_prefs->exists('dmscheduled')) {
-                    dcCore::app()->auth->user_prefs->delWorkspace(My::id());
-                    dcCore::app()->auth->user_prefs->renWorkspace('dmscheduled', My::id());
+                if (App::auth()->prefs()->exists('dmscheduled')) {
+                    App::auth()->prefs()->delWorkspace(My::id());
+                    App::auth()->prefs()->renWorkspace('dmscheduled', My::id());
                 }
                 // Change settings names (remove scheduled_ prefix in them)
-                $rename = function (string $name, dcWorkspace $preferences): void {
+                $rename = function (string $name, UserWorkspaceInterface $preferences): void {
                     if ($preferences->prefExists('scheduled_' . $name, true)) {
                         $preferences->rename('scheduled_' . $name, $name);
                     }
@@ -60,15 +60,15 @@ class Install extends Process
             // Default prefs for pending posts and comments
             $preferences = My::prefs();
             if ($preferences) {
-                $preferences->put('active', false, dcWorkspace::WS_BOOL, 'Display scheduled posts', false, true);
-                $preferences->put('posts_count', false, dcWorkspace::WS_BOOL, 'Display count of scheduled posts on posts dashboard icon', false, true);
-                $preferences->put('posts_nb', 5, dcWorkspace::WS_INT, 'Number of scheduled posts displayed', false, true);
-                $preferences->put('posts_large', true, dcWorkspace::WS_BOOL, 'Large display', false, true);
-                $preferences->put('monitor', false, dcWorkspace::WS_BOOL, 'Monitor', false, true);
-                $preferences->put('interval', 300, dcWorkspace::WS_INT, 'Interval between two refreshes', false, true);
+                $preferences->put('active', false, App::userWorkspace()::WS_BOOL, 'Display scheduled posts', false, true);
+                $preferences->put('posts_count', false, App::userWorkspace()::WS_BOOL, 'Display count of scheduled posts on posts dashboard icon', false, true);
+                $preferences->put('posts_nb', 5, App::userWorkspace()::WS_INT, 'Number of scheduled posts displayed', false, true);
+                $preferences->put('posts_large', true, App::userWorkspace()::WS_BOOL, 'Large display', false, true);
+                $preferences->put('monitor', false, App::userWorkspace()::WS_BOOL, 'Monitor', false, true);
+                $preferences->put('interval', 300, App::userWorkspace()::WS_INT, 'Interval between two refreshes', false, true);
             }
         } catch (Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
+            App::error()->add($e->getMessage());
         }
 
         return true;

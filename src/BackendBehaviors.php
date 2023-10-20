@@ -15,9 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\dmScheduled;
 
 use ArrayObject;
-use dcBlog;
-use dcCore;
-use dcWorkspace;
 use Dotclear\App;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Date;
@@ -27,6 +24,7 @@ use Dotclear\Helper\Html\Form\Label;
 use Dotclear\Helper\Html\Form\Legend;
 use Dotclear\Helper\Html\Form\Number;
 use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Interface\Core\BlogInterface;
 use Exception;
 
 class BackendBehaviors
@@ -35,7 +33,7 @@ class BackendBehaviors
     {
         // Get last $nb scheduled posts
         $params = [
-            'post_status' => dcBlog::POST_SCHEDULED,
+            'post_status' => BlogInterface::POST_SCHEDULED,
             'order'       => 'post_dt ASC',
         ];
         if ((int) $nb > 0) {
@@ -46,9 +44,9 @@ class BackendBehaviors
             $ret = '<ul>';
             while ($rs->fetch()) {
                 $ret .= '<li class="line" id="dmsp' . $rs->post_id . '">';
-                $ret .= '<a href="' . dcCore::app()->adminurl->get('admin.post', ['id' => $rs->post_id]) . '">' . $rs->post_title . '</a>';
+                $ret .= '<a href="' . App::backend()->url()->get('admin.post', ['id' => $rs->post_id]) . '">' . $rs->post_title . '</a>';
                 if ($large) {
-                    $dt = '<time datetime="' . Date::iso8601(strtotime($rs->post_dt), dcCore::app()->auth->getInfo('user_tz')) . '">%s</time>';
+                    $dt = '<time datetime="' . Date::iso8601(strtotime($rs->post_dt), App::auth()->getInfo('user_tz')) . '">%s</time>';
                     $ret .= ' (' .
                     __('by') . ' ' . $rs->user_id . ' ' . sprintf($dt, __('on') . ' ' .
                         Date::dt2str(App::blog()->settings()->system->date_format, $rs->post_dt) . ' ' .
@@ -60,7 +58,7 @@ class BackendBehaviors
                 $ret .= '</li>';
             }
             $ret .= '</ul>';
-            $ret .= '<p><a href="' . dcCore::app()->adminurl->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
+            $ret .= '<p><a href="' . App::backend()->url()->get('admin.posts', ['status' => BlogInterface::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
 
             return $ret;
         }
@@ -70,11 +68,11 @@ class BackendBehaviors
 
     private static function countScheduledPosts(): string
     {
-        $count = App::blog()->getPosts(['post_status' => dcBlog::POST_SCHEDULED], true)->f(0);
+        $count = App::blog()->getPosts(['post_status' => BlogInterface::POST_SCHEDULED], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', (int) $count), (int) $count);
 
-            return '</span></a> <a href="' . dcCore::app()->adminurl->get('admin.posts', ['status' => dcBlog::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
+            return '</span></a> <a href="' . App::backend()->url()->get('admin.posts', ['status' => BlogInterface::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         }
 
         return '';
@@ -146,15 +144,15 @@ class BackendBehaviors
             // Scheduled posts
             $preferences = My::prefs();
             if ($preferences) {
-                $preferences->put('active', !empty($_POST['dmscheduled_active']), dcWorkspace::WS_BOOL);
-                $preferences->put('posts_nb', (int) $_POST['dmscheduled_posts_nb'], dcWorkspace::WS_INT);
-                $preferences->put('posts_large', empty($_POST['dmscheduled_posts_small']), dcWorkspace::WS_BOOL);
-                $preferences->put('posts_count', !empty($_POST['dmscheduled_posts_count']), dcWorkspace::WS_BOOL);
-                $preferences->put('monitor', !empty($_POST['dmscheduled_monitor']), dcWorkspace::WS_BOOL);
-                $preferences->put('interval', (int) $_POST['dmscheduled_interval'], dcWorkspace::WS_INT);
+                $preferences->put('active', !empty($_POST['dmscheduled_active']), App::userWorkspace()::WS_BOOL);
+                $preferences->put('posts_nb', (int) $_POST['dmscheduled_posts_nb'], App::userWorkspace()::WS_INT);
+                $preferences->put('posts_large', empty($_POST['dmscheduled_posts_small']), App::userWorkspace()::WS_BOOL);
+                $preferences->put('posts_count', !empty($_POST['dmscheduled_posts_count']), App::userWorkspace()::WS_BOOL);
+                $preferences->put('monitor', !empty($_POST['dmscheduled_monitor']), App::userWorkspace()::WS_BOOL);
+                $preferences->put('interval', (int) $_POST['dmscheduled_interval'], App::userWorkspace()::WS_INT);
             }
         } catch (Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
+            App::error()->add($e->getMessage());
         }
 
         return '';

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\dmScheduled;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Backend extends Process
@@ -34,7 +34,7 @@ class Backend extends Process
         }
 
         // Dashboard behaviours
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'adminDashboardContentsV2' => BackendBehaviors::adminDashboardContents(...),
             'adminDashboardHeaders'    => BackendBehaviors::adminDashboardHeaders(...),
             'adminDashboardFavsIconV2' => BackendBehaviors::adminDashboardFavsIcon(...),
@@ -44,9 +44,9 @@ class Backend extends Process
         ]);
 
         // Register REST methods
-        dcCore::app()->rest->addFunction('dmScheduledPostsCount', BackendRest::getScheduledPostsCount(...));
-        dcCore::app()->rest->addFunction('dmScheduledCheck', BackendRest::checkScheduled(...));
-        dcCore::app()->rest->addFunction('dmLastScheduledRows', BackendRest::getLastScheduledRows(...));
+        App::rest()->addFunction('dmScheduledPostsCount', BackendRest::getScheduledPostsCount(...));
+        App::rest()->addFunction('dmScheduledCheck', BackendRest::checkScheduled(...));
+        App::rest()->addFunction('dmLastScheduledRows', BackendRest::getLastScheduledRows(...));
 
         return true;
     }
