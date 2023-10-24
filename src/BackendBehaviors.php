@@ -24,7 +24,6 @@ use Dotclear\Helper\Html\Form\Label;
 use Dotclear\Helper\Html\Form\Legend;
 use Dotclear\Helper\Html\Form\Number;
 use Dotclear\Helper\Html\Form\Para;
-use Dotclear\Interface\Core\BlogInterface;
 use Exception;
 
 class BackendBehaviors
@@ -33,7 +32,7 @@ class BackendBehaviors
     {
         // Get last $nb scheduled posts
         $params = [
-            'post_status' => BlogInterface::POST_SCHEDULED,
+            'post_status' => App::blog()::POST_SCHEDULED,
             'order'       => 'post_dt ASC',
         ];
         if ((int) $nb > 0) {
@@ -58,7 +57,7 @@ class BackendBehaviors
                 $ret .= '</li>';
             }
             $ret .= '</ul>';
-            $ret .= '<p><a href="' . App::backend()->url()->get('admin.posts', ['status' => BlogInterface::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
+            $ret .= '<p><a href="' . App::backend()->url()->get('admin.posts', ['status' => App::blog()::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
 
             return $ret;
         }
@@ -68,11 +67,11 @@ class BackendBehaviors
 
     private static function countScheduledPosts(): string
     {
-        $count = App::blog()->getPosts(['post_status' => BlogInterface::POST_SCHEDULED], true)->f(0);
+        $count = App::blog()->getPosts(['post_status' => App::blog()::POST_SCHEDULED], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', (int) $count), (int) $count);
 
-            return '</span></a> <a href="' . App::backend()->url()->get('admin.posts', ['status' => BlogInterface::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
+            return '</span></a> <a href="' . App::backend()->url()->get('admin.posts', ['status' => App::blog()::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         }
 
         return '';
