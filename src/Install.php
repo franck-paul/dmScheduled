@@ -41,8 +41,9 @@ class Install extends Process
                     App::auth()->prefs()->delWorkspace(My::id());
                     App::auth()->prefs()->renWorkspace('dmscheduled', My::id());
                 }
+
                 // Change settings names (remove scheduled_ prefix in them)
-                $rename = function (string $name, UserWorkspaceInterface $preferences): void {
+                $rename = static function (string $name, UserWorkspaceInterface $preferences) : void {
                     if ($preferences->prefExists('scheduled_' . $name, true)) {
                         $preferences->rename('scheduled_' . $name, $name);
                     }
@@ -53,6 +54,7 @@ class Install extends Process
                     foreach (['posts_count', 'posts_nb', 'posts_large', 'monitor'] as $pref) {
                         $rename($pref, $preferences);
                     }
+
                     $preferences->rename('scheduled_posts', 'active');
                 }
             }
@@ -67,8 +69,8 @@ class Install extends Process
                 $preferences->put('monitor', false, App::userWorkspace()::WS_BOOL, 'Monitor', false, true);
                 $preferences->put('interval', 300, App::userWorkspace()::WS_INT, 'Interval between two refreshes', false, true);
             }
-        } catch (Exception $e) {
-            App::error()->add($e->getMessage());
+        } catch (Exception $exception) {
+            App::error()->add($exception->getMessage());
         }
 
         return true;

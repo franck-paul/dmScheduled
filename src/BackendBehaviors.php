@@ -38,6 +38,7 @@ class BackendBehaviors
         if ((int) $nb > 0) {
             $params['limit'] = (int) $nb;
         }
+
         $rs = App::blog()->getPosts($params, false);
         if (!$rs->isEmpty()) {
             $ret = '<ul>';
@@ -54,12 +55,13 @@ class BackendBehaviors
                 } else {
                     $ret .= ' (<time datetime="' . Date::iso8601((int) strtotime($rs->post_dt)) . '">' . Date::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt) . '</time>)';
                 }
+
                 $ret .= '</li>';
             }
-            $ret .= '</ul>';
-            $ret .= '<p><a href="' . App::backend()->url()->get('admin.posts', ['status' => App::blog()::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>';
 
-            return $ret;
+            $ret .= '</ul>';
+
+            return $ret . ('<p><a href="' . App::backend()->url()->get('admin.posts', ['status' => App::blog()::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>');
         }
 
         return '<p>' . __('No scheduled post') . '</p>';
@@ -150,8 +152,8 @@ class BackendBehaviors
                 $preferences->put('monitor', !empty($_POST['dmscheduled_monitor']), App::userWorkspace()::WS_BOOL);
                 $preferences->put('interval', (int) $_POST['dmscheduled_interval'], App::userWorkspace()::WS_INT);
             }
-        } catch (Exception $e) {
-            App::error()->add($e->getMessage());
+        } catch (Exception $exception) {
+            App::error()->add($exception->getMessage());
         }
 
         return '';
