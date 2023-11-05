@@ -107,7 +107,7 @@ class BackendBehaviors
         Page::jsJson('dm_scheduled', [
             'dmScheduled_Monitor'  => $preferences?->monitor,
             'dmScheduled_Counter'  => $preferences?->posts_count,
-            'dmScheduled_Interval' => ($preferences?->interval ?? 300),
+            'dmScheduled_Interval' => ($preferences->interval ?? 300),
         ]) .
         My::jsLoad('service.js') .
         My::cssLoad('style.css');
