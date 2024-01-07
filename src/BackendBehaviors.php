@@ -114,7 +114,7 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<int, ArrayObject<int, string>>  $contents  The contents
+     * @param      ArrayObject<int, ArrayObject<int, non-falsy-string>>  $contents  The contents
      *
      * @return     string
      */
@@ -126,13 +126,13 @@ class BackendBehaviors
         if ($preferences?->active) {
             $class = ($preferences->posts_large ? 'medium' : 'small');
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
-            '<h3>' . '<img src="' . urldecode(Page::getPF(My::id() . '/icon.svg')) . '" alt="" class="icon-small" />' . ' ' . __('Scheduled posts') . '</h3>';
+            '<h3>' . '<img src="' . urldecode(Page::getPF(My::id() . '/icon.svg')) . '" alt="" class="icon-small">' . ' ' . __('Scheduled posts') . '</h3>';
             $ret .= self::getScheduledPosts(
                 $preferences->posts_nb,
                 $preferences->posts_large
             );
             $ret .= '</div>';
-            $contents[] = new ArrayObject([$ret]);
+            $contents->append(new ArrayObject([$ret]));
         }
 
         return '';
