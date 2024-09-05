@@ -25,6 +25,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/?q=dmScheduled',
         'support'    => 'https://github.com/franck-paul/dmScheduled',
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/master/dcstore.xml',
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/main/dcstore.xml',
     ]
 );

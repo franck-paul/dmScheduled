@@ -128,7 +128,7 @@ dotclear.dmScheduledPostsView = (line, action = 'toggle', e = null) => {
     return;
   }
 
-  const postId = $(line).attr('id').substr(4);
+  const postId = $(line).attr('id').substring(4);
   const lineId = `dmspe${postId}`;
   let li = document.getElementById(lineId);
 
