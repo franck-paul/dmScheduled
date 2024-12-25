@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief dmScheduled, a plugin for Dotclear 2
  *
@@ -55,13 +56,7 @@ class BackendRest
     public static function getLastScheduledRows(): array
     {
         $preferences = My::prefs();
-        if (!$preferences) {
-            return [
-                'ret' => false,
-            ];
-        }
-
-        $list = BackendBehaviors::getScheduledPosts(
+        $list        = BackendBehaviors::getScheduledPosts(
             (int) $preferences->posts_nb,
             (bool) $preferences->posts_large
         );

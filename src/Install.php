@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief dmScheduled, a plugin for Dotclear 2
  *
@@ -43,32 +44,28 @@ class Install extends Process
                 }
 
                 // Change settings names (remove scheduled_ prefix in them)
-                $rename = static function (string $name, UserWorkspaceInterface $preferences) : void {
+                $rename = static function (string $name, UserWorkspaceInterface $preferences): void {
                     if ($preferences->prefExists('scheduled_' . $name, true)) {
                         $preferences->rename('scheduled_' . $name, $name);
                     }
                 };
 
                 $preferences = My::prefs();
-                if ($preferences) {
-                    foreach (['posts_count', 'posts_nb', 'posts_large', 'monitor'] as $pref) {
-                        $rename($pref, $preferences);
-                    }
-
-                    $preferences->rename('scheduled_posts', 'active');
+                foreach (['posts_count', 'posts_nb', 'posts_large', 'monitor'] as $pref) {
+                    $rename($pref, $preferences);
                 }
+
+                $preferences->rename('scheduled_posts', 'active');
             }
 
             // Default prefs for pending posts and comments
             $preferences = My::prefs();
-            if ($preferences) {
-                $preferences->put('active', false, App::userWorkspace()::WS_BOOL, 'Display scheduled posts', false, true);
-                $preferences->put('posts_count', false, App::userWorkspace()::WS_BOOL, 'Display count of scheduled posts on posts dashboard icon', false, true);
-                $preferences->put('posts_nb', 5, App::userWorkspace()::WS_INT, 'Number of scheduled posts displayed', false, true);
-                $preferences->put('posts_large', true, App::userWorkspace()::WS_BOOL, 'Large display', false, true);
-                $preferences->put('monitor', false, App::userWorkspace()::WS_BOOL, 'Monitor', false, true);
-                $preferences->put('interval', 300, App::userWorkspace()::WS_INT, 'Interval between two refreshes', false, true);
-            }
+            $preferences->put('active', false, App::userWorkspace()::WS_BOOL, 'Display scheduled posts', false, true);
+            $preferences->put('posts_count', false, App::userWorkspace()::WS_BOOL, 'Display count of scheduled posts on posts dashboard icon', false, true);
+            $preferences->put('posts_nb', 5, App::userWorkspace()::WS_INT, 'Number of scheduled posts displayed', false, true);
+            $preferences->put('posts_large', true, App::userWorkspace()::WS_BOOL, 'Large display', false, true);
+            $preferences->put('monitor', false, App::userWorkspace()::WS_BOOL, 'Monitor', false, true);
+            $preferences->put('interval', 300, App::userWorkspace()::WS_INT, 'Interval between two refreshes', false, true);
         } catch (Exception $exception) {
             App::error()->add($exception->getMessage());
         }

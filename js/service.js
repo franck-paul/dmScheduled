@@ -159,7 +159,7 @@ dotclear.dmScheduledPostsView = (line, action = 'toggle', e = null) => {
   }
 };
 
-$(() => {
+dotclear.ready(() => {
   Object.assign(dotclear, dotclear.getData('dm_scheduled'));
   $.expandContent({
     lines: $('#scheduled-posts li.line'),

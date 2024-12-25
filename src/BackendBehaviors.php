@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief dmScheduled, a plugin for Dotclear 2
  *
@@ -88,7 +89,7 @@ class BackendBehaviors
     public static function adminDashboardFavsIcon(string $name, ArrayObject $icon): string
     {
         $preferences = My::prefs();
-        if ($preferences && $preferences->posts_count && $name === 'posts') {
+        if ($preferences->posts_count && $name === 'posts') {
             // Hack posts title if there is at least one scheduled post
             $str = self::countScheduledPosts();
             if ($str != '') {
@@ -105,8 +106,8 @@ class BackendBehaviors
 
         return
         Page::jsJson('dm_scheduled', [
-            'dmScheduled_Monitor'  => $preferences?->monitor,
-            'dmScheduled_Counter'  => $preferences?->posts_count,
+            'dmScheduled_Monitor'  => $preferences->monitor,
+            'dmScheduled_Counter'  => $preferences->posts_count,
             'dmScheduled_Interval' => ($preferences->interval ?? 300),
         ]) .
         My::jsLoad('service.js') .
@@ -123,7 +124,7 @@ class BackendBehaviors
         $preferences = My::prefs();
 
         // Add large modules to the contents stack
-        if ($preferences?->active) {
+        if ($preferences->active) {
             $class = ($preferences->posts_large ? 'medium' : 'small');
             $ret   = '<div id="scheduled-posts" class="box ' . $class . '">' .
             '<h3>' . '<img src="' . urldecode(Page::getPF(My::id() . '/icon.svg')) . '" alt="" class="icon-small">' . ' ' . __('Scheduled posts') . '</h3>';
@@ -144,14 +145,12 @@ class BackendBehaviors
         try {
             // Scheduled posts
             $preferences = My::prefs();
-            if ($preferences) {
-                $preferences->put('active', !empty($_POST['dmscheduled_active']), App::userWorkspace()::WS_BOOL);
-                $preferences->put('posts_nb', (int) $_POST['dmscheduled_posts_nb'], App::userWorkspace()::WS_INT);
-                $preferences->put('posts_large', empty($_POST['dmscheduled_posts_small']), App::userWorkspace()::WS_BOOL);
-                $preferences->put('posts_count', !empty($_POST['dmscheduled_posts_count']), App::userWorkspace()::WS_BOOL);
-                $preferences->put('monitor', !empty($_POST['dmscheduled_monitor']), App::userWorkspace()::WS_BOOL);
-                $preferences->put('interval', (int) $_POST['dmscheduled_interval'], App::userWorkspace()::WS_INT);
-            }
+            $preferences->put('active', !empty($_POST['dmscheduled_active']), App::userWorkspace()::WS_BOOL);
+            $preferences->put('posts_nb', (int) $_POST['dmscheduled_posts_nb'], App::userWorkspace()::WS_INT);
+            $preferences->put('posts_large', empty($_POST['dmscheduled_posts_small']), App::userWorkspace()::WS_BOOL);
+            $preferences->put('posts_count', !empty($_POST['dmscheduled_posts_count']), App::userWorkspace()::WS_BOOL);
+            $preferences->put('monitor', !empty($_POST['dmscheduled_monitor']), App::userWorkspace()::WS_BOOL);
+            $preferences->put('interval', (int) $_POST['dmscheduled_interval'], App::userWorkspace()::WS_INT);
         } catch (Exception $exception) {
             App::error()->add($exception->getMessage());
         }
@@ -169,31 +168,31 @@ class BackendBehaviors
         ->legend((new Legend(__('Scheduled posts on dashboard'))))
         ->fields([
             (new Para())->items([
-                (new Checkbox('dmscheduled_posts_count', $preferences?->posts_count))
+                (new Checkbox('dmscheduled_posts_count', $preferences->posts_count))
                     ->value(1)
                     ->label((new Label(__('Display count of scheduled posts on posts dashboard icon'), Label::INSIDE_TEXT_AFTER))),
             ]),
             (new Para())->items([
-                (new Checkbox('dmscheduled_active', $preferences?->active))
+                (new Checkbox('dmscheduled_active', $preferences->active))
                     ->value(1)
                     ->label((new Label(__('Display scheduled posts'), Label::INSIDE_TEXT_AFTER))),
             ]),
             (new Para())->items([
-                (new Number('dmscheduled_posts_nb', 1, 999, $preferences?->posts_nb))
+                (new Number('dmscheduled_posts_nb', 1, 999, $preferences->posts_nb))
                     ->label((new Label(__('Number of scheduled posts to display:'), Label::INSIDE_TEXT_BEFORE))),
             ]),
             (new Para())->items([
-                (new Checkbox('dmscheduled_posts_small', !$preferences?->posts_large))
+                (new Checkbox('dmscheduled_posts_small', !$preferences->posts_large))
                     ->value(1)
                     ->label((new Label(__('Small screen'), Label::INSIDE_TEXT_AFTER))),
             ]),
             (new Para())->items([
-                (new Checkbox('dmscheduled_monitor', $preferences?->monitor))
+                (new Checkbox('dmscheduled_monitor', $preferences->monitor))
                     ->value(1)
                     ->label((new Label(__('Monitor'), Label::INSIDE_TEXT_AFTER))),
             ]),
             (new Para())->items([
-                (new Number('dmscheduled_interval', 0, 9_999_999, $preferences?->interval))
+                (new Number('dmscheduled_interval', 0, 9_999_999, $preferences->interval))
                     ->label((new Label(__('Interval in seconds between two refreshes:'), Label::INSIDE_TEXT_BEFORE))),
             ]),
         ])
