@@ -36,8 +36,8 @@ class BackendBehaviors
             'post_status' => App::blog()::POST_SCHEDULED,
             'order'       => 'post_dt ASC',
         ];
-        if ((int) $nb > 0) {
-            $params['limit'] = (int) $nb;
+        if ($nb > 0) {
+            $params['limit'] = $nb;
         }
 
         $rs = App::blog()->getPosts($params, false);
@@ -83,8 +83,6 @@ class BackendBehaviors
     /**
      * @param      string                       $name   The name
      * @param      ArrayObject<string, mixed>   $icon   The icon
-     *
-     * @return     string
      */
     public static function adminDashboardFavsIcon(string $name, ArrayObject $icon): string
     {
@@ -92,7 +90,7 @@ class BackendBehaviors
         if ($preferences->posts_count && $name === 'posts') {
             // Hack posts title if there is at least one scheduled post
             $str = self::countScheduledPosts();
-            if ($str != '') {
+            if ($str !== '') {
                 $icon[0] .= $str;
             }
         }
@@ -116,8 +114,6 @@ class BackendBehaviors
 
     /**
      * @param      ArrayObject<int, ArrayObject<int, non-falsy-string>>  $contents  The contents
-     *
-     * @return     string
      */
     public static function adminDashboardContents(ArrayObject $contents): string
     {
