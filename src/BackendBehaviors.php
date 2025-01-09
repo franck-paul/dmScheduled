@@ -33,7 +33,7 @@ class BackendBehaviors
     {
         // Get last $nb scheduled posts
         $params = [
-            'post_status' => App::blog()::POST_SCHEDULED,
+            'post_status' => App::status()->post()::SCHEDULED,
             'order'       => 'post_dt ASC',
         ];
         if ($nb > 0) {
@@ -62,7 +62,7 @@ class BackendBehaviors
 
             $ret .= '</ul>';
 
-            return $ret . ('<p><a href="' . App::backend()->url()->get('admin.posts', ['status' => App::blog()::POST_SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>');
+            return $ret . ('<p><a href="' . App::backend()->url()->get('admin.posts', ['status' => App::status()->post()::SCHEDULED]) . '">' . __('See all scheduled posts') . '</a></p>');
         }
 
         return '<p>' . __('No scheduled post') . '</p>';
@@ -70,11 +70,11 @@ class BackendBehaviors
 
     private static function countScheduledPosts(): string
     {
-        $count = App::blog()->getPosts(['post_status' => App::blog()::POST_SCHEDULED], true)->f(0);
+        $count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->f(0);
         if ($count) {
             $str = sprintf(__('(%d scheduled post)', '(%d scheduled posts)', (int) $count), (int) $count);
 
-            return '</span></a> <a href="' . App::backend()->url()->get('admin.posts', ['status' => App::blog()::POST_SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
+            return '</span></a> <a href="' . App::backend()->url()->get('admin.posts', ['status' => App::status()->post()::SCHEDULED]) . '"><span class="db-icon-title-dm-scheduled">' . sprintf($str, $count);
         }
 
         return '';

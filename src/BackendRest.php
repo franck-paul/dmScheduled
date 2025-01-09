@@ -26,7 +26,7 @@ class BackendRest
      */
     public static function getScheduledPostsCount(): array
     {
-        $count = App::blog()->getPosts(['post_status' => App::blog()::POST_SCHEDULED], true)->f(0);
+        $count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->f(0);
 
         return [
             'ret'   => true,
