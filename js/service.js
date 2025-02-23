@@ -1,4 +1,4 @@
-/*global $, dotclear */
+/*global jQuery, dotclear */
 'use strict';
 
 dotclear.dmScheduledPostsCount = (icon) => {
@@ -11,19 +11,19 @@ dotclear.dmScheduledPostsCount = (icon) => {
           if (response?.payload.ret) {
             // Replace current counters
             const nb = response.payload.count;
-            if (nb !== undefined && nb != dotclear.dbScheduledPostsCount_Counter) {
+            if (nb !== undefined && nb !== dotclear.dbScheduledPostsCount_Counter) {
               const href = icon.attr('href');
               const param = `${href.includes('?') ? '&' : '?'}status=-1`;
               const url = `${href}${param}`;
               // First pass or counter changed
-              const link = $(`#dashboard-main #icons p a[href="${url}"]`);
+              const link = jQuery(`#dashboard-main #icons p a[href="${url}"]`);
               if (link.length) {
                 // Update count if exists
                 const nb_label = link.children('span.db-icon-title-dm-scheduled');
                 if (nb_label.length) {
                   nb_label.text(nb);
                 }
-              } else if (nb != '') {
+              } else if (nb !== '') {
                 // Add full element (link + counter)
                 const xml = ` <a href="${url}"><span class="db-icon-title-dm-scheduled">${nb}</span></a>`;
                 icon.after(xml);
@@ -57,29 +57,29 @@ dotclear.dmLastScheduledRows = () => {
         if (response?.success) {
           if (response?.payload.ret) {
             // Replace current list with the new one
-            if ($('#scheduled-posts ul').length) {
-              $('#scheduled-posts ul').remove();
+            if (jQuery('#scheduled-posts ul').length) {
+              jQuery('#scheduled-posts ul').remove();
             }
-            if ($('#scheduled-posts p').length) {
-              $('#scheduled-posts p').remove();
+            if (jQuery('#scheduled-posts p').length) {
+              jQuery('#scheduled-posts p').remove();
             }
             // Add current hour in badge on module
             const now = new Date();
             const time = now.toLocaleTimeString();
             // Display module content
-            $('#scheduled-posts h3').after(response.payload.list);
+            jQuery('#scheduled-posts h3').after(response.payload.list);
             // Display badge with current time
-            dotclear.badge($('#scheduled-posts'), {
+            dotclear.badge(jQuery('#scheduled-posts'), {
               id: 'dmsp',
               value: `<time datetime="${now.toISOString()}">${time}</time>`,
               type: 'info',
             });
             // Bind every new lines for viewing scheduled post content
-            $.expandContent({
-              lines: $('#scheduled-posts li.line'),
+            dotclear.expandContent({
+              lines: document.querySelectorAll('#scheduled-posts li.line'),
               callback: dotclear.dmScheduledPostsView,
             });
-            $('#scheduled-posts ul').addClass('expandable');
+            jQuery('#scheduled-posts ul').addClass('expandable');
           }
         } else {
           console.log(dotclear.debug && response?.message ? response.message : 'Dotclear REST server error');
@@ -124,17 +124,17 @@ dotclear.dmScheduledCheck = () => {
 };
 
 dotclear.dmScheduledPostsView = (line, action = 'toggle', e = null) => {
-  if ($(line).attr('id') == undefined) {
+  if (jQuery(line).attr('id') === undefined) {
     return;
   }
 
-  const postId = $(line).attr('id').substring(4);
+  const postId = jQuery(line).attr('id').substring(4);
   const lineId = `dmspe${postId}`;
   let li = document.getElementById(lineId);
 
   if (li) {
-    $(li).toggle();
-    $(line).toggleClass('expand');
+    jQuery(li).toggle();
+    jQuery(line).toggleClass('expand');
   } else {
     // Get content
     dotclear.getEntryContent(
@@ -144,12 +144,12 @@ dotclear.dmScheduledPostsView = (line, action = 'toggle', e = null) => {
           li = document.createElement('li');
           li.id = lineId;
           li.className = 'expand';
-          $(li).append(content);
-          $(line).addClass('expand');
+          jQuery(li).append(content);
+          jQuery(line).addClass('expand');
           line.parentNode.insertBefore(li, line.nextSibling);
           return;
         }
-        $(line).toggleClass('expand');
+        jQuery(line).toggleClass('expand');
       },
       {
         clean: e.metaKey,
@@ -161,11 +161,11 @@ dotclear.dmScheduledPostsView = (line, action = 'toggle', e = null) => {
 
 dotclear.ready(() => {
   Object.assign(dotclear, dotclear.getData('dm_scheduled'));
-  $.expandContent({
-    lines: $('#scheduled-posts li.line'),
+  dotclear.expandContent({
+    lines: document.querySelectorAll('#scheduled-posts li.line'),
     callback: dotclear.dmScheduledPostsView,
   });
-  $('#scheduled-posts ul').addClass('expandable');
+  jQuery('#scheduled-posts ul').addClass('expandable');
   if (dotclear.dmScheduled_Monitor) {
     // First pass
     dotclear.dmScheduledCheck();
@@ -175,9 +175,9 @@ dotclear.ready(() => {
   if (!dotclear.dmScheduled_Counter) {
     return;
   }
-  let icon = $('#dashboard-main #icons p a[href="posts.php"]');
+  let icon = jQuery('#dashboard-main #icons p a[href="posts.php"]');
   if (!icon.length) {
-    icon = $('#dashboard-main #icons p #icon-process-posts-fav');
+    icon = jQuery('#dashboard-main #icons p #icon-process-posts-fav');
   }
   if (icon.length) {
     // Icon exists on dashboard
