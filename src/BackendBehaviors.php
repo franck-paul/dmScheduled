@@ -148,7 +148,7 @@ class BackendBehaviors
             if (version_compare(App::config()->dotclearVersion(), '2.34', '>=') || str_contains((string) App::config()->dotclearVersion(), 'dev')) {
                 $str = self::countScheduledPosts();
                 if ($str !== '') {
-                    $icon[3] = $str;
+                    $icon[3] = ($icon[3] ?? '') . $str;
                 }
             } else {
                 $str = self::countScheduledPostsLegacy();
