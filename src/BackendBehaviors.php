@@ -56,14 +56,14 @@ class BackendBehaviors
                     $infos = [];
                     if ($large) {
                         $details = __('on') . ' ' .
-                            Date::dt2str(App::blog()->settings()->system->date_format, $rs->post_dt) . ' ' .
-                            Date::dt2str(App::blog()->settings()->system->time_format, $rs->post_dt);
+                            Date::dt2str(App::blog()->settings()->system->date_format, $rs->post_dt, App::auth()->getInfo('user_tz')) . ' ' .
+                            Date::dt2str(App::blog()->settings()->system->time_format, $rs->post_dt, App::auth()->getInfo('user_tz'));
                         $infos[] = (new Text(null, __('by') . ' ' . $rs->user_id));
                         $infos[] = (new Text('time', $details))
-                            ->extra('datetime="' . Date::iso8601((int) strtotime($rs->post_dt)) . '"');
+                            ->extra('datetime="' . Date::iso8601((int) strtotime($rs->post_dt), App::auth()->getInfo('user_tz')) . '"');
                     } else {
-                        $infos[] = (new Text('time', Date::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt)))
-                            ->extra('datetime="' . Date::iso8601((int) strtotime($rs->post_dt)) . '"');
+                        $infos[] = (new Text('time', Date::dt2str(__('%Y-%m-%d %H:%M'), $rs->post_dt, App::auth()->getInfo('user_tz'))))
+                            ->extra('datetime="' . Date::iso8601((int) strtotime($rs->post_dt), App::auth()->getInfo('user_tz')) . '"');
                     }
 
                     yield (new Li('dmsp' . $rs->post_id))
