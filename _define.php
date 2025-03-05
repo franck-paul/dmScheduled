@@ -15,9 +15,9 @@ $this->registerModule(
     'Scheduled Dashboard Module',
     'Display scheduled posts on dashboard',
     'Franck Paul',
-    '5.2',
+    '5.3',
     [
-        'date'        => '2025-02-24T12:23:26+0100',
+        'date'        => '2025-03-06T00:23:53+0100',
         'requires'    => [['core', '2.33']],
         'permissions' => 'My',
         'type'        => 'plugin',
@@ -28,5 +28,6 @@ $this->registerModule(
         'details'    => 'https://open-time.net/?q=dmScheduled',
         'support'    => 'https://github.com/franck-paul/dmScheduled',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/main/dcstore.xml',
+        'license'    => 'gpl2',
     ]
 );
