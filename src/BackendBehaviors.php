@@ -32,6 +32,7 @@ use Dotclear\Helper\Html\Form\Note;
 use Dotclear\Helper\Html\Form\Number;
 use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Helper\Html\Form\Set;
+use Dotclear\Helper\Html\Form\Span;
 use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Form\Timestamp;
 use Dotclear\Helper\Html\Form\Ul;
@@ -109,7 +110,7 @@ class BackendBehaviors
             return (new Link())
                 ->href(App::backend()->url()->get('admin.posts', ['status' => App::status()->post()::SCHEDULED]))
                 ->items([
-                    (new Text('span', sprintf($str, $count)))
+                    (new Span(sprintf($str, $count)))
                         ->class('db-icon-title-dm-scheduled'),
                 ])
             ->render();
