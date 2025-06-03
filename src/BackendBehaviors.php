@@ -173,8 +173,7 @@ class BackendBehaviors
             'counter'  => $preferences->posts_count,
             'interval' => ($preferences->interval ?? 300),
         ]) .
-        My::jsLoad('service.js') .
-        My::cssLoad('style.css');
+        My::jsLoad('service.js');
     }
 
     /**
