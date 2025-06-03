@@ -19,7 +19,7 @@ dotclear.ready(() => {
               // Replace current counters
               const nb = response.payload.count;
               if (nb !== undefined && nb !== dotclear.dmScheduled.counter) {
-                const href = icon.attr('href');
+                const href = icon.getAttribute('href');
                 const param = `${href.includes('?') ? '&' : '?'}status=-1`;
                 const url = `${href}${param}`;
                 // First pass or counter changed
