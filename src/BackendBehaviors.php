@@ -17,7 +17,6 @@ namespace Dotclear\Plugin\dmScheduled;
 
 use ArrayObject;
 use Dotclear\App;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Form\Checkbox;
@@ -168,7 +167,7 @@ class BackendBehaviors
         $preferences = My::prefs();
 
         return
-        Page::jsJson('dm_scheduled', [
+        App::backend()->page()->jsJson('dm_scheduled', [
             'monitor'  => $preferences->monitor,
             'counter'  => $preferences->posts_count,
             'interval' => ($preferences->interval ?? 300),
@@ -192,7 +191,7 @@ class BackendBehaviors
                 ->items([
                     (new Text(
                         'h3',
-                        (new Img(urldecode(Page::getPF(My::id() . '/icon.svg'))))
+                        (new Img(urldecode((string) App::backend()->page()->getPF(My::id() . '/icon.svg'))))
                             ->class('icon-small')
                         ->render() . ' ' . __('Scheduled posts')
                     )),
