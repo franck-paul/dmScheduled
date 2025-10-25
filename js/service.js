@@ -144,7 +144,7 @@ dotclear.ready(() => {
     return;
   }
 
-  icon = document.querySelector('#dashboard-main #icons p #icon-process-posts-fav');
+  const icon = document.querySelector('#dashboard-main #icons p #icon-process-posts-fav');
   if (icon) {
     // Icon exists on dashboard
     // First pass
