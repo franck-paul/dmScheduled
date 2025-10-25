@@ -144,11 +144,8 @@ dotclear.ready(() => {
     return;
   }
 
-  let icon = document.querySelector('#dashboard-main #icons p a[href="posts.php"]');
-  if (!icon) {
-    icon = document.querySelector('#dashboard-main #icons p #icon-process-posts-fav');
-  }
-  if (icon.length) {
+  icon = document.querySelector('#dashboard-main #icons p #icon-process-posts-fav');
+  if (icon) {
     // Icon exists on dashboard
     // First pass
     getCount(icon);
