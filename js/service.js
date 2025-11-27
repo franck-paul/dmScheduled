@@ -36,7 +36,7 @@ dotclear.ready(() => {
                   icon.insertAdjacentHTML('afterEnd', xml);
                 }
                 // Store current counter
-                dotclear.mbScheduled.counter = nb;
+                dotclear.dmScheduled.counter = nb;
               }
             }
           } else {
