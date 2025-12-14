@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="dmScheduled">
     <name>Scheduled Dashboard Module</name>
-    <version>8.3.1</version>
+    <version>8.4</version>
     <author>Franck Paul</author>
     <desc>Display scheduled posts on dashboard</desc>
-    <date>2025-11-27T23:56:35+0100</date>
-    <file>https://github.com/franck-paul/dmScheduled/releases/download/8.3.1/plugin-dmScheduled-8.3.1.zip</file>
+    <date>2025-12-14T08:56:49+0100</date>
+    <file>https://github.com/franck-paul/dmScheduled/releases/download/8.4/plugin-dmScheduled-8.4.zip</file>
     <da:dcmin>2.36</da:dcmin>
     <da:details>https://open-time.net/?q=dmScheduled</da:details>
     <da:support>https://github.com/franck-paul/dmScheduled</da:support>
