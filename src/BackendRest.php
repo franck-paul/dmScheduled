@@ -26,11 +26,11 @@ class BackendRest
      */
     public static function getScheduledPostsCount(): array
     {
-        $count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->f(0);
+        $count = is_numeric($count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->f(0)) ? (int) $count : 0;
 
         return [
             'ret'   => true,
-            'count' => $count ? sprintf(__('(%d scheduled post)', '(%d scheduled posts)', (int) $count), $count) : '',
+            'count' => $count > 0 ? sprintf(__('(%d scheduled post)', '(%d scheduled posts)', $count), $count) : '',
         ];
     }
 
@@ -56,8 +56,11 @@ class BackendRest
     public static function getLastScheduledRows(): array
     {
         $preferences = My::prefs();
-        $list        = BackendBehaviors::getScheduledPosts(
-            (int) $preferences->posts_nb,
+
+        $posts_nb = is_numeric($posts_nb = $preferences->posts_nb) ? (int) $posts_nb : 0;
+
+        $list = BackendBehaviors::getScheduledPosts(
+            $posts_nb,
             (bool) $preferences->posts_large
         );
 
