@@ -15,9 +15,9 @@ $this->registerModule(
     'Scheduled Dashboard Module',
     'Display scheduled posts on dashboard',
     'Franck Paul',
-    '8.4',
+    '8.5',
     [
-        'date'     => '2025-12-14T08:56:49+0100',
+        'date'     => '2026-04-09T15:47:14+0200',
         'requires' => [
             ['core', '2.36'],
             ['dmHelper', '5.0'],
