@@ -26,7 +26,7 @@ class BackendRest
      */
     public static function getScheduledPostsCount(): array
     {
-        $count = is_numeric($count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->f(0)) ? (int) $count : 0;
+        $count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->cardinal();
 
         return [
             'ret'   => true,

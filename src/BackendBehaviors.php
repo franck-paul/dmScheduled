@@ -111,7 +111,7 @@ class BackendBehaviors
 
     private static function countScheduledPosts(): string
     {
-        $count = is_numeric($count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->f(0)) ? (int) $count : 0;
+        $count = App::blog()->getPosts(['post_status' => App::status()->post()::SCHEDULED], true)->cardinal();
         if ($count > 0) {
             return (new Link())
                 ->href(App::backend()->url()->get('admin.posts', ['status' => App::status()->post()::SCHEDULED]))
