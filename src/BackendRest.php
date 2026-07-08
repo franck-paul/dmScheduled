@@ -57,11 +57,9 @@ class BackendRest
     {
         $preferences = My::prefs();
 
-        $posts_nb = is_numeric($posts_nb = $preferences->posts_nb) ? (int) $posts_nb : 0;
-
         $list = BackendBehaviors::getScheduledPosts(
-            $posts_nb,
-            (bool) $preferences->posts_large
+            $preferences->getInt('posts_nb', false),
+            $preferences->getBool('posts_large', false)
         );
 
         return [
