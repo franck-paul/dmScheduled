@@ -237,7 +237,7 @@ class BackendBehaviors
                     ->label((new Label(__('Display scheduled posts'), Label::INSIDE_TEXT_AFTER))),
             ]),
             (new Para())->items([
-                (new Number('dmscheduled_posts_nb', 1, 999, $preferences->getInt('posts_nb, 5', false)))
+                (new Number('dmscheduled_posts_nb', 1, 999, $preferences->getInt('posts_nb', false) ?: 5))
                     ->label((new Label(__('Number of scheduled posts to display:'), Label::INSIDE_TEXT_BEFORE))),
             ]),
             (new Para())->items([
