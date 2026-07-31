@@ -154,7 +154,7 @@ class BackendBehaviors
             'counter'  => $preferences->getBool('posts_count'),
             'interval' => $preferences->getInt('interval', false) ?: 300,
         ]) .
-        My::jsLoad('service.js');
+        My::jsLoad('service.js', defer: true);
     }
 
     /**
