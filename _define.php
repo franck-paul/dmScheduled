@@ -11,26 +11,30 @@
  * @copyright Franck Paul contact@open-time.net
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-$this->registerModule(
-    'Scheduled Dashboard Module',
-    'Display scheduled posts on dashboard',
-    'Franck Paul',
-    '10.0',
-    [
-        'date'     => '2026-08-03T09:53:59+0200',
-        'requires' => [
-            ['core', '2.39'],
-            ['dmHelper', '5.0'],
-        ],
-        'permissions' => 'My',
-        'type'        => 'plugin',
-        'settings'    => [
-            'pref' => '#user-favorites.dmscheduled',
-        ],
+declare(strict_types=1);
 
-        'details'    => 'https://open-time.net/?q=dmScheduled',
-        'support'    => 'https://github.com/franck-paul/dmScheduled',
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/main/dcstore.xml',
-        'license'    => 'gpl2',
-    ]
-);
+if (isset($this) && is_object($this) && method_exists($this, 'registerModule') && isset($this->id) && is_string($this->id)) {
+    $this->registerModule(
+        'Scheduled Dashboard Module',
+        'Display scheduled posts on dashboard',
+        'Franck Paul',
+        '10.0',
+        [
+            'date'     => '2026-08-03T09:53:59+0200',
+            'requires' => [
+                ['core', '2.39'],
+                ['dmHelper', '5.0'],
+            ],
+            'permissions' => 'My',
+            'type'        => 'plugin',
+            'settings'    => [
+                'pref' => '#user-favorites.dmscheduled',
+            ],
+
+            'details'    => 'https://open-time.net/?q=dmScheduled',
+            'support'    => 'https://github.com/franck-paul/dmScheduled',
+            'repository' => 'https://raw.githubusercontent.com/franck-paul/dmScheduled/main/dcstore.xml',
+            'license'    => 'gpl2',
+        ]
+    );
+}
