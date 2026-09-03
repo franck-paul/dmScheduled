@@ -46,9 +46,9 @@ class Install
                 }
 
                 // Change settings names (remove scheduled_ prefix in them)
-                $rename = static function (string $name, UserWorkspaceInterface $preferences): void {
-                    if ($preferences->prefExists('scheduled_' . $name, true)) {
-                        $preferences->rename('scheduled_' . $name, $name);
+                $rename = static function (string $name, UserWorkspaceInterface $userWorkspace): void {
+                    if ($userWorkspace->prefExists('scheduled_' . $name, true)) {
+                        $userWorkspace->rename('scheduled_' . $name, $name);
                     }
                 };
 
