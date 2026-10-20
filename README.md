@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/franck-paul/dmScheduled)](https://github.com/franck-paul/dmScheduled/releases)
 [![Date](https://img.shields.io/github/release-date/franck-paul/dmScheduled)](https://github.com/franck-paul/dmScheduled/releases)
 [![Issues](https://img.shields.io/github/issues/franck-paul/dmScheduled)](https://github.com/franck-paul/dmScheduled/issues)
-[![License](https://img.shields.io/github/license/franck-paul/dmScheduled)](https://github.com/franck-paul/dmScheduled/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/franck-paul/dmScheduled)](https://github.com/franck-paul/dmScheduled/blob/main/LICENSE)
 
 Dotclear 2 plugin
 
