@@ -132,7 +132,7 @@ class BackendBehaviors
     public static function adminDashboardFavsIcon(string $name, ArrayObject $arrayObject): string
     {
         $preferences = My::prefs();
-        if ($preferences->getBool('posts_count') && $name === 'posts') {
+        if ($preferences->getBool('posts_count', false) && $name === 'posts') {
             // Hack posts title if there is at least one scheduled post
             $str = self::countScheduledPosts();
             if ($str !== '') {
@@ -167,8 +167,8 @@ class BackendBehaviors
         $posts_nb = $preferences->getInt('posts_nb', false);
 
         // Add large modules to the contents stack
-        if ($preferences->getBool('active')) {
-            $class = ($preferences->getBool('posts_large') ? 'medium' : 'small');
+        if ($preferences->getBool('active', false)) {
+            $class = ($preferences->getBool('posts_large', false) ? 'medium' : 'small');
 
             $ret = (new Div('scheduled-posts'))
                 ->class(['box', $class])
